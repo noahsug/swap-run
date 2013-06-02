@@ -5,7 +5,9 @@ deploy:
 	-rm -r bin
 	mkdir bin
 	coffee -cmo bin coffee
-	coffee -cmo bin vendor/atom
+	coffee -cmo bin nodejs_web
+	coffee -cmo bin vendor
+	python nodejs_web/populate_html.py
 
 # run the test suit using node.js
 test:
