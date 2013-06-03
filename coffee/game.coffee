@@ -1,4 +1,4 @@
-class Game extends atom.Game
+exports.Game = class Game extends atom.Game
   @SPEED = 300
 
   constructor: ->
@@ -24,10 +24,3 @@ class Game extends atom.Game
     atom.context.fillRect 0, 0, atom.width, atom.height
     atom.context.fillStyle = 'white'
     atom.context.fillRect 0, 0, @leftWidth_, atom.height
-
-game = new Game
-
-window.onblur = -> game.stop()
-window.onfocus = -> game.run()
-
-game.run()
