@@ -1,26 +1,22 @@
+{Entity} = require "../coffee/entity.coffee"
+{Renderer} = require "../coffee/renderer.coffee"
+{atom} = require "../spec/mock/atom_mock.coffee"
+{keybindings} = require "../coffee/keybindings.coffee"
+
 exports.Game = class Game extends atom.Game
-  @SPEED = 300
 
   constructor: ->
     super
-    atom.input.bind atom.key.LEFT_ARROW, 'left'
-    atom.input.bind atom.key.A, 'left'
+    keybindings.configure()
+    @initPlayer_()
+    @renderer_ = new Renderer()
 
-    atom.input.bind atom.key.RIGHT_ARROW, 'right'
-    atom.input.bind atom.key.D, 'right'
-
-    @leftWidth_ = atom.width / 2
+  initPlayer_: ->
+    @player_ = new Entity
+    @player_.setPos { x: atom.width / 2, y: atom.height / 2 }
 
   update: (dt) ->
-    if atom.input.down 'left'
-      @leftWidth_ -= Game.SPEED * dt
-    if atom.input.down 'right'
-      @leftWidth_ += Game.SPEED * dt
-
-    @leftWidth_ = util.bound @leftWidth_, 0, atom.width
+    @player_.update(dt)
 
   draw: ->
-    atom.context.fillStyle = 'black'
-    atom.context.fillRect 0, 0, atom.width, atom.height
-    atom.context.fillStyle = 'white'
-    atom.context.fillRect 0, 0, @leftWidth_, atom.height
+    @renderer_.draw @player_

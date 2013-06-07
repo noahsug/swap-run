@@ -64,3 +64,9 @@ describe 'Util functions:', ->
 
     it 'throws an error when max < min', ->
       expect(-> util.bound 3, 10, 5).toThrow()
+
+  describe 'distance', ->
+    it 'determines the distance between two points', ->
+      point1 = { x: 1, y: 2 }
+      point2 = { x: 4, y: 6 }
+      expect(util.distance point1, point2).toBe 5
