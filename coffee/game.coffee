@@ -1,22 +1,92 @@
-{Entity} = require "../coffee/entity.coffee"
+{EntityFactory} = require "../coffee/entity_factory.coffee"
 {Renderer} = require "../coffee/renderer.coffee"
 {atom} = require "../spec/mock/atom_mock.coffee"
 {keybindings} = require "../coffee/keybindings.coffee"
+{util} = require "../coffee/util.coffee"
+{EnemySpawner} = require "../coffee/enemy_spawner.coffee"
 
 exports.Game = class Game extends atom.Game
 
   constructor: ->
     super
     keybindings.configure()
-    @initPlayer_()
+    @init_()
     @renderer_ = new Renderer()
 
+  init_: ->
+    @state_ = 'playing'
+    @initPlayer_()
+    @initEnemySpawner_ @player_
+    @score_ = 0
+
   initPlayer_: ->
-    @player_ = new Entity
+    @player_ = EntityFactory.create "player"
     @player_.setPos { x: atom.width / 2, y: atom.height / 2 }
 
+  getPlayer: -> @player_
+
+  initEnemySpawner_: ->
+    @enemies_ = []
+    @spawner_ = new EnemySpawner()
+    @spawner_.on 'spawn', (enemy) =>
+      @addEnemy_ enemy
+
+  addEnemy_: (enemy) ->
+    enemy.setTarget @player_
+    enemy.setPos x: 5, y: 5
+    @enemies_.push enemy
+
+  getEnemies: -> @enemies_
+
+  getState: -> @state_
+
+  getScore: -> @score_
+
   update: (dt) ->
-    @player_.update(dt)
+    switch @state_
+      when 'playing' then @updatePlaying_ dt
+      when 'lost' then @updateEndGame_()
+
+  updateEndGame_: ->
+    if atom.input.down 'swap'
+      @restartGame_()
+
+  updatePlaying_: (dt) ->
+    @spawner_.update dt
+    @updateEntities_ dt
+    @checkCollisions_()
+    @removeInactive_()
+    @state_ = 'lost' if !@player_.isActive()
+
+  updateEntities_: (dt) ->
+    @player_.update dt
+    for enemy in @enemies_
+      enemy.update dt
+
+  checkCollisions_: ->
+    entities = [@enemies_..., @player_]
+    for i in [0..entities.length-2] by 1
+      entity1 = entities[i]
+      for j in [i+1..entities.length-1] by 1
+        entity2 = entities[j]
+        if @entitiesCollide_ entity1, entity2
+          entity1.die()
+          entity2.die()
+
+  entitiesCollide_: (entity1, entity2) ->
+    distance = util.distance entity1.getPos(), entity2.getPos()
+    distance < entity1.getRadius() + entity2.getRadius()
+
+  removeInactive_: ->
+    prevNumEnemies = @enemies_.length
+    @enemies_ = (e for e in @enemies_ when e.isActive())
+    @score_ += prevNumEnemies - @enemies_.length
+
+  restartGame_: ->
+    @init_()
 
   draw: ->
-    @renderer_.draw @player_
+    @renderer_.draw this
+
+  resize: ->
+    @draw()

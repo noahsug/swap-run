@@ -70,3 +70,12 @@ describe 'Util functions:', ->
       point1 = { x: 1, y: 2 }
       point2 = { x: 4, y: 6 }
       expect(util.distance point1, point2).toBe 5
+
+  describe 'sign', ->
+    it 'returns 1 if value >= 0', ->
+      expect(util.sign 6).toBe 1
+      expect(util.sign 0).toBe 1
+
+    it 'returns -1 if value > 0', ->
+      expect(util.sign -7).toBe -1
+      expect(util.sign -.00001).toBe -1

@@ -1,12 +1,16 @@
-{util} = require "../coffee/util.coffee"
 {Position} = require "../coffee/position.coffee"
 {atom} = require "../spec/mock/atom_mock.coffee"
+{util} = require "../coffee/util.coffee"
 
 exports.Entity = class Entity
-  constructor: ->
+
+  constructor: (@type_) ->
     @pos_ = { x: 0, y: 0 }
-    @radius_ = 1
-    @setSpeed 100
+    @radius_ = 10
+    @active_ = true
+    @setSpeed 200
+
+  getType: -> @type_
 
   setPos: (pos) ->
     @pos_.x = pos.x
@@ -19,25 +23,22 @@ exports.Entity = class Entity
   getRadius: -> @radius_
 
   setSpeed: (@speed_) ->
-    @diagSpeed_ = @speed_ / Math.SQRT2
-
   getSpeed: -> @speed_
 
-  isMovingDiagonally_: ->
-    (atom.input.down('left') or atom.input.down('right')) and
-        (atom.input.down('down') or atom.input.down('up'))
+  setMoveBehavior_: (@moveBehavior_) ->
+
+  isActive: -> @active_
+  die: -> @active_ = false
 
   update: (dt) ->
-    speed = if @isMovingDiagonally_() then @diagSpeed_ else @speed_
-    distanceToMove = speed * dt
-    if atom.input.down 'left'
-      @pos_.x -= distanceToMove
-    if atom.input.down 'right'
-      @pos_.x += distanceToMove
-    if atom.input.down 'up'
-      @pos_.y -= distanceToMove
-    if atom.input.down 'down'
-      @pos_.y += distanceToMove
+    @move_ dt
 
+  move_: (dt) ->
+    @velocityVector_ = @moveBehavior_.getVelocityVector()
+    @updatePosition_ dt
+
+  updatePosition_:  (dt) ->
+    @pos_.x += @velocityVector_.x * @speed_ * dt
+    @pos_.y += @velocityVector_.y * @speed_ * dt
     @pos_.x = util.bound @pos_.x, 0, atom.width
     @pos_.y = util.bound @pos_.y, 0, atom.height

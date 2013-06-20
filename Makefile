@@ -13,6 +13,10 @@ deploy:
 test:
 	jasmine-node --coffee spec/
 
+# automatically test whenever a change is made
+watch:
+	jasmine-node --coffee spec/ --autotest --watch . --noStack
+
 # run a terminal version of the program using node.js
 run:
 	coffee coffee/main_console.coffee

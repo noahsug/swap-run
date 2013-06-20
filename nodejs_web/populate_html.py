@@ -10,7 +10,7 @@ for coffee_file in os.listdir('coffee'):
   filePath = '<script type="text/javascript" src="%s.js"></script>' % (fileName)
   game_files.append(filePath)
 
-content = content.replace('$GAME FILES$', '\n'.join(game_files)*2)
+content = content.replace('$GAME FILES$', '\n'.join(game_files)*len(game_files))
 
 output = open('bin/main.html', 'w')
 output.write(content)
