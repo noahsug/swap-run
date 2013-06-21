@@ -1,13 +1,17 @@
-all: deploy
+all: deploy_test
 
-# deploy as an html5 game, run by opening main.html in a browser
-deploy:
+# deploy as an html5 game for test, run by opening main.html in a browser
+deploy_test:
 	-rm -r bin
 	mkdir bin
 	coffee -cmo bin coffee
 	coffee -cmo bin nodejs_web
 	coffee -cmo bin vendor
-	python nodejs_web/populate_html.py
+	python nodejs_web/populate_html.py "DEV"
+
+# deploy as an html5 game for production
+deploy: deploy_test
+	python nodejs_web/populate_html.py "PROD"
 
 # run the test suit using node.js
 test:

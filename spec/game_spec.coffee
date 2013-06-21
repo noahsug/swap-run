@@ -1,17 +1,20 @@
-{EntityFactory} = require "../coffee/entity_factory.coffee"
+  {EntityFactory} = require "../coffee/entity_factory.coffee"
 {Game} = require "../coffee/game.coffee"
 {atom} = require "../spec/mock/atom_mock.coffee"
 {jasmine_env} = require "../spec/jasmine_env.coffee"
 {util} = require "../coffee/util.coffee"
 
 describe "A game", ->
-  game = player = undefined
+  game = state = enemies = player = undefined
   atom.width = 100
   atom.height = 150
 
   tick = (num=1) ->
     for i in [1..num]
       game.update .05
+    player = game.getPlayer()
+    state = game.getState()
+    enemies = game.getEnemies()
 
   addEnemy = (pos) ->
     enemy = EntityFactory.create 'enemy'
@@ -21,7 +24,6 @@ describe "A game", ->
   beforeEach ->
     jasmine_env.init this
     game = new Game()
-    player = game.getPlayer()
     tick()
 
   getEnemy = (num) ->
@@ -42,27 +44,27 @@ describe "A game", ->
     getEnemy(0).setPos { x, y }
 
     game.checkCollisions_()
-    expect(game.getState()).toBe 'playing'
+    expect(state).toBe 'playing'
     tick()
-    expect(game.getState()).toBe 'lost'
+    expect(state).toBe 'lost'
 
   it "kills enemies when they collide with each other", ->
     addEnemy getEnemy(0).getPos()
-    expect(game.getEnemies().length).toBe 2
+    expect(enemies.length).toBe 2
     tick()
-    expect(game.getEnemies().length).toBe 0
+    expect(enemies.length).toBe 0
 
   it "eventually ends if the player doesn't move", ->
     tick 20
-    expect(game.getState()).toBe 'lost'
+    expect(state).toBe 'lost'
 
   it "can be reset after it ends", ->
     tick 20
     atom.input.press 'swap'
     tick()
-    expect(game.getState()).toBe 'playing'
+    expect(state).toBe 'playing'
     expect(game.getPlayer().getPos()).toEqual x: 50, y: 75
-    expect(game.getEnemies().length).toBe 0
+    expect(enemies.length).toBe 0
 
   it "has enemies that are removed when they collide", ->
     addEnemy x: 10, y: 10
@@ -72,3 +74,8 @@ describe "A game", ->
     addEnemy getEnemy(0).getPos()
     tick()
     expect(game.getScore()).toBe 2
+
+  it "an enemy hitting a player gives the score of that enemy", ->
+    getEnemy(0).setPos player.getPos()
+    tick()
+    expect(game.getScore()).toBe 1

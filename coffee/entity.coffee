@@ -25,6 +25,9 @@ exports.Entity = class Entity
   setSpeed: (@speed_) ->
   getSpeed: -> @speed_
 
+  setKnowledge: (@knowledge_) ->
+  getKnowledge: -> @knowledge_
+
   setMoveBehavior_: (@moveBehavior_) ->
 
   isActive: -> @active_
