@@ -10,8 +10,8 @@ describe "Tracking move behavior", ->
     movement = new TrackingMoveBehavior()
     tracker = new Entity
     target = new Entity
-    movement.setTracker tracker
-    movement.setTarget target
+    movement.setMovingEntity tracker
+    movement.setKnowledge getPlayer: -> target
 
   it "moves right if the target is to the right", ->
     tracker.setPos x: 3, y: 2
@@ -41,5 +41,5 @@ describe "Tracking move behavior", ->
     expect(movement.getVelocityVector()).toEqual x: 0, y: 0
 
   it "doesn't move when it has no target", ->
-    movement.setTarget null
+    movement.setKnowledge getPlayer: -> null
     expect(movement.getVelocityVector()).toEqual x: 0, y: 0

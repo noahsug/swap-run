@@ -1,4 +1,3 @@
-{Enemy} = require "../coffee/enemy.coffee"
 {Entity} = require "../coffee/entity.coffee"
 {TrackingMoveBehavior} = require "../coffee/tracking_move_behavior.coffee"
 {UserInputMoveBehavior} = require "../coffee/user_input_move_behavior.coffee"
@@ -27,7 +26,8 @@ exports.EntityFactory = class EntityFactory
     entity
 
   createEnemy: ->
-    entity = new Enemy(@type_)
+    entity = new Entity(@type_)
     entity.setRadius 16
     entity.setSpeed 150
+    entity.setMoveBehavior_ new TrackingMoveBehavior
     entity

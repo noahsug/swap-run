@@ -1,5 +1,5 @@
-{EventEmitter} = require "../coffee/event_emitter.coffee"
 {EntityFactory} = require "../coffee/entity_factory.coffee"
+{EventEmitter} = require "../coffee/event_emitter.coffee"
 
 exports.EnemySpawner = class EnemySpawner extends EventEmitter
 
@@ -16,4 +16,5 @@ exports.EnemySpawner = class EnemySpawner extends EventEmitter
 
   spawn_: ->
     enemy = EntityFactory.create "enemy"
+    enemy.setPos x: 5, y: 5
     @emit "spawn", enemy

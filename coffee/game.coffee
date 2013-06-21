@@ -1,9 +1,10 @@
 {EntityFactory} = require "../coffee/entity_factory.coffee"
+{EnemySpawner} = require "../coffee/enemy_spawner.coffee"
+{Knowledge} = require "../coffee/knowledge.coffee"
 {Renderer} = require "../coffee/renderer.coffee"
 {atom} = require "../spec/mock/atom_mock.coffee"
 {keybindings} = require "../coffee/keybindings.coffee"
 {util} = require "../coffee/util.coffee"
-{EnemySpawner} = require "../coffee/enemy_spawner.coffee"
 
 exports.Game = class Game extends atom.Game
 
@@ -16,11 +17,13 @@ exports.Game = class Game extends atom.Game
   init_: ->
     @state_ = 'playing'
     @initPlayer_()
-    @initEnemySpawner_ @player_
+    @knowledge_ = new Knowledge this
+    @initEnemySpawner_()
     @score_ = 0
 
   initPlayer_: ->
     @player_ = EntityFactory.create "player"
+    @player_.setKnowledge @knowledge_
     @player_.setPos { x: atom.width / 2, y: atom.height / 2 }
 
   getPlayer: -> @player_
@@ -32,8 +35,7 @@ exports.Game = class Game extends atom.Game
       @addEnemy_ enemy
 
   addEnemy_: (enemy) ->
-    enemy.setTarget @player_
-    enemy.setPos x: 5, y: 5
+    enemy.setKnowledge @knowledge_
     @enemies_.push enemy
 
   getEnemies: -> @enemies_

@@ -26,9 +26,11 @@ exports.Entity = class Entity
   getSpeed: -> @speed_
 
   setKnowledge: (@knowledge_) ->
-  getKnowledge: -> @knowledge_
+    @moveBehavior_?.setKnowledge @knowledge_
 
   setMoveBehavior_: (@moveBehavior_) ->
+    @moveBehavior_.setMovingEntity this
+    @moveBehavior_.setKnowledge @knowledge_
 
   isActive: -> @active_
   die: -> @active_ = false

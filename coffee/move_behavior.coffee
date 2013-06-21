@@ -1,8 +1,12 @@
 {util} = require "../coffee/util.coffee"
 
 exports.MoveBehavior = class MoveBehavior
-  constructor: (@movingEntity_) ->
+  constructor: ->
     @velocityVector_ = { x: 0, y: 0 }
+
+  setMovingEntity: (@movingEntity_) ->
+
+  setKnowledge: (@knowledge_) ->
 
   getVelocityVector: ->
     @determineVelocityVector_()

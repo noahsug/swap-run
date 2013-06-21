@@ -1,4 +1,4 @@
-  {EntityFactory} = require "../coffee/entity_factory.coffee"
+{EntityFactory} = require "../coffee/entity_factory.coffee"
 {Game} = require "../coffee/game.coffee"
 {atom} = require "../spec/mock/atom_mock.coffee"
 {jasmine_env} = require "../spec/jasmine_env.coffee"
@@ -18,8 +18,8 @@ describe "A game", ->
 
   addEnemy = (pos) ->
     enemy = EntityFactory.create 'enemy'
-    enemy.setPos pos
     game.addEnemy_ enemy
+    enemy.setPos pos
 
   beforeEach ->
     jasmine_env.init this
@@ -28,6 +28,9 @@ describe "A game", ->
 
   getEnemy = (num) ->
     game.getEnemies()[num]
+
+  it "is initially in the 'playing' state", ->
+    expect(state).toBe 'playing'
 
   it "has a player that starts in the center of the screen", ->
     expect(player.getPos()).toEqual { x: 50, y: 75 }
@@ -75,7 +78,7 @@ describe "A game", ->
     tick()
     expect(game.getScore()).toBe 2
 
-  it "an enemy hitting a player gives the score of that enemy", ->
+  it "scores the enemy that hits the player", ->
     getEnemy(0).setPos player.getPos()
     tick()
     expect(game.getScore()).toBe 1
