@@ -27,15 +27,15 @@ describe "Tracking move behavior", ->
     tracker.setPos x: 0, y: 0
     target.setPos x: 1, y: 2
     result = movement.getVelocityVector()
-    expect(result.x).toAlmostBe .44
-    expect(result.y).toAlmostBe .89
+    expect(result.x).toAlmostBe .4472
+    expect(result.y).toAlmostBe .8944
 
   it "can move diagonally to a far away target", ->
     tracker.setPos x: -4, y: 7
     target.setPos x: 32, y: -48
     result = movement.getVelocityVector()
-    expect(result.x).toAlmostBe .54
-    expect(result.y).toAlmostBe -.83
+    expect(result.x).toAlmostBe .5477
+    expect(result.y).toAlmostBe -.8367
 
   it "doesn't move when its reached the target", ->
     expect(movement.getVelocityVector()).toEqual x: 0, y: 0

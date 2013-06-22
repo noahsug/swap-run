@@ -16,5 +16,5 @@ exports.jasmine_env =
       toBeAnInstanceOf: (clazz) ->
         this.actual instanceof clazz
 
-      toAlmostBe: (expected) ->
-        "#{this.actual}".indexOf("#{expected}") is 0
+      toAlmostBe: (expected, sigDigAccuracy=4) ->
+        this.actual.toFixed(sigDigAccuracy) is expected.toFixed(sigDigAccuracy)

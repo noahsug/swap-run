@@ -11,7 +11,7 @@ exports.atom =
     released_: {}
 
     down: (action) -> @down_[action]
-    pressed: (action) -> @pressed[action]
+    pressed: (action) -> @pressed_[action]
     released: (action) -> @released_[action]
 
     press: (action) ->

@@ -1,9 +1,18 @@
+{util} = require "../coffee/util.coffee"
+
 exports.Knowledge = class Knowledge
-  constructor: (@game_) ->
+
+  setGameInfo: (@gameInfo_) ->
 
   getPlayer: ->
-    @game_.getPlayer()
+    @gameInfo_.getPlayer()
 
-  getNearestEnemy: (entity) ->
-    # TODO actually return nearest enemy
-    @game_.getEnemies()[0]
+  getNearestEnemyTo: (pos) ->
+    maxDistanceSquared = Infinity
+    nearestEnemy = null
+    for enemy in @gameInfo_.getEnemies()
+      distanceSquared = util.distanceSquared enemy.getPos(), pos
+      if distanceSquared < maxDistanceSquared
+        maxDistanceSquared = distanceSquared
+        nearestEnemy = enemy
+    nearestEnemy

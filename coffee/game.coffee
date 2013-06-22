@@ -16,14 +16,18 @@ exports.Game = class Game extends atom.Game
 
   init_: ->
     @state_ = 'playing'
-    @initPlayer_()
-    @knowledge_ = new Knowledge this
+    @initKnowledge_()
+    @initPlayer_ @knowledge_
     @initEnemySpawner_()
     @score_ = 0
 
-  initPlayer_: ->
+  initKnowledge_: ->
+    @knowledge_ = new Knowledge
+    @knowledge_.setGameInfo this
+
+  initPlayer_: (knowledge) ->
     @player_ = EntityFactory.create "player"
-    @player_.setKnowledge @knowledge_
+    @player_.setKnowledge knowledge
     @player_.setPos { x: atom.width / 2, y: atom.height / 2 }
 
   getPlayer: -> @player_
@@ -61,9 +65,9 @@ exports.Game = class Game extends atom.Game
     @state_ = 'lost' if !@player_.isActive()
 
   updateEntities_: (dt) ->
-    @player_.update dt
     for enemy in @enemies_
       enemy.update dt
+    @player_.update dt
 
   checkCollisions_: ->
     entities = [@enemies_..., @player_]

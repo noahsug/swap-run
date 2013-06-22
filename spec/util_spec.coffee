@@ -71,6 +71,12 @@ describe 'Util functions:', ->
       point2 = { x: 4, y: 6 }
       expect(util.distance point1, point2).toBe 5
 
+  describe 'distanceSquared', ->
+    it 'determines the squared distance between two points', ->
+      point1 = { x: 1, y: 2 }
+      point2 = { x: 4, y: 6 }
+      expect(util.distanceSquared point1, point2).toBe 25
+
   describe 'sign', ->
     it 'returns 1 if value >= 0', ->
       expect(util.sign 6).toBe 1

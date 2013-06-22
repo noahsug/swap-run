@@ -79,3 +79,9 @@ describe "An entity", ->
     entity.update 20
     distance = util.distance origPosition, entity.getPos()
     expect(distance).toBe 20
+
+  it "doesn't move when no move behavior is specified", ->
+    entity.moveBehavior_ = null
+    origPos = entity.getPos()
+    entity.update 1
+    expect(entity.getPos()).toEqual origPos

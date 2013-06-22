@@ -1,4 +1,5 @@
 {Entity} = require "../coffee/entity.coffee"
+{Player} = require "../coffee/player.coffee"
 {TrackingMoveBehavior} = require "../coffee/tracking_move_behavior.coffee"
 {UserInputMoveBehavior} = require "../coffee/user_input_move_behavior.coffee"
 
@@ -19,7 +20,7 @@ exports.EntityFactory = class EntityFactory
     "create#{@type_[0].toUpperCase()}#{@type_[1..]}"
 
   createPlayer: ->
-    entity = new Entity(@type_)
+    entity = new Player(@type_)
     entity.setRadius 14
     entity.setSpeed 200
     entity.setMoveBehavior_ new UserInputMoveBehavior

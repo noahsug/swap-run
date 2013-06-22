@@ -36,7 +36,8 @@ exports.Entity = class Entity
   die: -> @active_ = false
 
   update: (dt) ->
-    @move_ dt
+    if @moveBehavior_
+      @move_ dt
 
   move_: (dt) ->
     @velocityVector_ = @moveBehavior_.getVelocityVector()

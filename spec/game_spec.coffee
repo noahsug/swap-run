@@ -8,10 +8,11 @@ describe "A game", ->
   game = state = enemies = player = undefined
   atom.width = 100
   atom.height = 150
+  dt = .05
 
   tick = (num=1) ->
     for i in [1..num]
-      game.update .05
+      game.update dt
     player = game.getPlayer()
     state = game.getState()
     enemies = game.getEnemies()
@@ -82,3 +83,12 @@ describe "A game", ->
     getEnemy(0).setPos player.getPos()
     tick()
     expect(game.getScore()).toBe 1
+
+  it "the player swaps position when the swap key is pressed", ->
+    atom.input.press 'swap'
+    origPlayerPos = player.getPos()
+    origEnemyPos = getEnemy(0).getPos()
+    tick()
+    expect(getEnemy(0).getPos()).toEqual origPlayerPos
+    playerDistanceFromOrigEnemyPos = util.distance origEnemyPos, player.getPos()
+    expect(playerDistanceFromOrigEnemyPos).toAlmostBe getEnemy(0).getSpeed() * dt
