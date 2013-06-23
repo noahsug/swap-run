@@ -25,7 +25,6 @@ exports.Renderer = class Renderer
         frameW: 64
         frameH: 64
         postInitCallback: =>
-          @spriteMap_.start()
           @loadedAllSprites_ = true
       }
 
@@ -51,10 +50,14 @@ exports.Renderer = class Renderer
     y = player.getPos().y - @spriteMap_.sprite.frameH / 2
     if @loadedAllSprites_
       if @spriteMap_.activeLoop isnt player.getDirection()
-        @spriteMap_.start player.getDirection()
-      unless player.isMoving()
+        @spriteMap_.use player.getDirection()
+        if player.isMoving() and not player.startedMoving()
+          @spriteMap_.start()
+      if not player.isMoving()
         @spriteMap_.stop()
         @spriteMap_.reset()
+      if player.startedMoving()
+        @spriteMap_.start()
       @spriteMap_.draw atom.context, x, y
 
   drawEnemies_: ->

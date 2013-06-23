@@ -11,8 +11,8 @@ exports.Game = class Game extends atom.Game
   constructor: ->
     super
     keybindings.configure()
-    @init_()
     @renderer_ = new Renderer()
+    @init_()
 
   init_: ->
     @state_ = 'playing'
