@@ -6,7 +6,7 @@ deploy_test:
 	mkdir bin
 	coffee -cmo bin coffee
 	coffee -cmo bin nodejs_web
-	coffee -cmo bin vendor
+	coffee -cmo bin vendor/atom
 	python nodejs_web/populate_html.py "DEV"
 
 # deploy as an html5 game for production

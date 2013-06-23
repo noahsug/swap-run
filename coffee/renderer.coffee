@@ -1,4 +1,26 @@
+{Sprite} = require "../spec/mock/sprite_mock.coffee"
+{SpriteMap} = require "../spec/mock/sprite_map_mock.coffee"
+
 exports.Renderer = class Renderer
+  constructor: ->
+    @loadedAllSprites_ = false
+    @spriteMap_ = new SpriteMap '../assets/femaleleatherpreview_0.png', {
+      'up':
+        startRow: 8
+        endRow: 8
+        endCol: 8
+      'left':
+        startRow: 9
+        endRow: 9
+        endCol: 8
+      }, {
+        frameW: 64
+        frameH: 64
+        postInitCallback: =>
+          @spriteMap_.use 'up'
+          @spriteMap_.start()
+          @loadedAllSprites_ = true
+      }
 
   draw: (@game_) ->
     switch @game_.getState()
@@ -13,12 +35,15 @@ exports.Renderer = class Renderer
     @drawEnemies_()
 
   drawBackground_: ->
-    atom.context.fillStyle = 'black'
+    atom.context.fillStyle = '2E2E2E'
     atom.context.fillRect 0, 0, atom.width, atom.height
 
   drawPlayer_: ->
-    atom.context.fillStyle = 'white'
-    @drawEntity_ @game_.getPlayer()
+    player = @game_.getPlayer()
+    x = player.getPos().x - @spriteMap_.sprite.frameW / 2
+    y = player.getPos().y - @spriteMap_.sprite.frameH / 2
+    if @loadedAllSprites_
+      @spriteMap_.draw atom.context, x, y
 
   drawEnemies_: ->
     atom.context.fillStyle = 'red'
