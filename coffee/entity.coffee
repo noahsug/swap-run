@@ -46,5 +46,3 @@ exports.Entity = class Entity
   updatePosition_:  (dt) ->
     @pos_.x += @velocityVector_.x * @speed_ * dt
     @pos_.y += @velocityVector_.y * @speed_ * dt
-    @pos_.x = util.bound @pos_.x, 0, atom.width
-    @pos_.y = util.bound @pos_.y, 0, atom.height

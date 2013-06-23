@@ -84,8 +84,9 @@ describe "A game", ->
     tick()
     expect(game.getScore()).toBe 1
 
-  it "the player swaps position when the swap key is pressed", ->
+  it "has a player that swaps position when the swap key is pressed", ->
     atom.input.press 'swap'
+    getEnemy(0).setPos x: 20, y: 25
     origPlayerPos = player.getPos()
     origEnemyPos = getEnemy(0).getPos()
     tick()

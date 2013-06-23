@@ -12,6 +12,7 @@ describe "A player", ->
     player = new Player()
     enemy = new Entity()
     player.setPos x: 50, y: 100
+    enemy.setPos x: 20, y: 35
     player.setKnowledge createKnowledge()
 
   createKnowledge = ->
@@ -21,7 +22,7 @@ describe "A player", ->
     knowledge.setGameInfo gameInfo
     return knowledge
 
-  it "can swap positions with the nearest enemy when the swap key is pressed", ->
+  it "swaps positions with the nearest enemy when the swap key is pressed", ->
     atom.input.press 'swap'
     enemyPos = enemy.getPos()
     playerPos = player.getPos()
@@ -37,7 +38,7 @@ describe "A player", ->
     expect(player.getPos()).toEqual playerPos
     expect(enemy.getPos()).toEqual enemyPos
 
-  it "swapping does nothing when there are no enemies", ->
+  it "does nothing when trying to swap but there are no enemies", ->
     gameInfo.setEnemies []
     atom.input.press 'swap'
     enemyPos = enemy.getPos()
@@ -45,3 +46,8 @@ describe "A player", ->
     player.update()
     expect(player.getPos()).toEqual playerPos
     expect(enemy.getPos()).toEqual enemyPos
+
+  it "has its position bound to the size of the world", ->
+    player.setPos x: 0, y: 0
+    player.update 1
+    expect(player.getPos()).toEqual x: player.getRadius(), y: player.getRadius()
