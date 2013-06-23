@@ -13,11 +13,18 @@ exports.Renderer = class Renderer
         startRow: 9
         endRow: 9
         endCol: 8
+      'down':
+        startRow: 10
+        endRow: 10
+        endCol: 8
+      'right':
+        startRow: 11
+        endRow: 11
+        endCol: 8
       }, {
         frameW: 64
         frameH: 64
         postInitCallback: =>
-          @spriteMap_.use 'up'
           @spriteMap_.start()
           @loadedAllSprites_ = true
       }
@@ -43,6 +50,8 @@ exports.Renderer = class Renderer
     x = player.getPos().x - @spriteMap_.sprite.frameW / 2
     y = player.getPos().y - @spriteMap_.sprite.frameH / 2
     if @loadedAllSprites_
+      if @spriteMap_.activeLoop isnt player.getDirection()
+        @spriteMap_.start player.getDirection()
       @spriteMap_.draw atom.context, x, y
 
   drawEnemies_: ->
