@@ -8,6 +8,7 @@ exports.Entity = class Entity
     @pos_ = { x: 0, y: 0 }
     @radius_ = 10
     @active_ = true
+    @currentDirection_ = 'down'
     @setSpeed 200
 
   getType: -> @type_
@@ -33,12 +34,10 @@ exports.Entity = class Entity
     @moveBehavior_.setKnowledge @knowledge_
 
   getDirection: ->
-    if not @velocityVector_ || @velocityVector_.x == @velocityVector_.y == 0
-      'down'
-    else if Math.abs(@velocityVector_.y) > Math.abs(@velocityVector_.x)
-      if @velocityVector_.y > 0 then 'down' else 'up'
-    else
-      if @velocityVector_.x > 0 then 'right' else 'left'
+    @currentDirection_
+
+  isMoving: ->
+    @velocityVector_? and (@velocityVector_.x != 0 or @velocityVector_.y != 0)
 
   isActive: -> @active_
   die: -> @active_ = false
@@ -46,6 +45,7 @@ exports.Entity = class Entity
   update: (dt) ->
     if @moveBehavior_
       @move_ dt
+      @updateDirection_()
 
   move_: (dt) ->
     @velocityVector_ = @moveBehavior_.getVelocityVector()
@@ -54,3 +54,10 @@ exports.Entity = class Entity
   updatePosition_:  (dt) ->
     @pos_.x += @velocityVector_.x * @speed_ * dt
     @pos_.y += @velocityVector_.y * @speed_ * dt
+
+  updateDirection_: ->
+    return unless @isMoving()
+    if Math.abs(@velocityVector_.y) > Math.abs(@velocityVector_.x)
+      @currentDirection_ = if @velocityVector_.y > 0 then 'down' else 'up'
+    else
+      @currentDirection_ = if @velocityVector_.x > 0 then 'right' else 'left'

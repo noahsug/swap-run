@@ -109,6 +109,22 @@ describe "An entity", ->
   it "reports its direction is the last reported direction when it stops", ->
     atom.input.press 'up'
     entity.update 1
-    entity.moveBehavior_ = null
+    atom.input.release 'up'
     entity.update 1
     expect(entity.getDirection()).toBe 'up'
+
+  it "reports that its moving when moving", ->
+    atom.input.press 'up'
+    entity.update 1
+    expect(entity.isMoving()).toBe true
+
+  it "reports that its not moving when it stops moving", ->
+    atom.input.press 'up'
+    entity.update 1
+    expect(entity.isMoving()).toBe true
+    atom.input.release 'up'
+    entity.update 1
+    expect(entity.isMoving()).toBe false
+
+  it "reports that its not moving when it has never moved", ->
+    expect(entity.isMoving()).toBe false
