@@ -52,6 +52,9 @@ exports.Renderer = class Renderer
     if @loadedAllSprites_
       if @spriteMap_.activeLoop isnt player.getDirection()
         @spriteMap_.start player.getDirection()
+      unless player.isMoving()
+        @spriteMap_.stop()
+        @spriteMap_.reset()
       @spriteMap_.draw atom.context, x, y
 
   drawEnemies_: ->
