@@ -28,9 +28,17 @@ exports.Entity = class Entity
   setKnowledge: (@knowledge_) ->
     @moveBehavior_?.setKnowledge @knowledge_
 
-  setMoveBehavior_: (@moveBehavior_) ->
+  setMoveBehavior: (@moveBehavior_) ->
     @moveBehavior_.setMovingEntity this
     @moveBehavior_.setKnowledge @knowledge_
+
+  getDirection: ->
+    if not @velocityVector_ || @velocityVector_.x == @velocityVector_.y == 0
+      'down'
+    else if Math.abs(@velocityVector_.y) > Math.abs(@velocityVector_.x)
+      if @velocityVector_.y > 0 then 'down' else 'up'
+    else
+      if @velocityVector_.x > 0 then 'right' else 'left'
 
   isActive: -> @active_
   die: -> @active_ = false

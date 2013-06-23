@@ -23,12 +23,12 @@ exports.EntityFactory = class EntityFactory
     entity = new Player(@type_)
     entity.setRadius 14
     entity.setSpeed 200
-    entity.setMoveBehavior_ new UserInputMoveBehavior
+    entity.setMoveBehavior new UserInputMoveBehavior
     entity
 
   createEnemy: ->
     entity = new Entity(@type_)
     entity.setRadius 16
     entity.setSpeed 150
-    entity.setMoveBehavior_ new TrackingMoveBehavior
+    entity.setMoveBehavior new TrackingMoveBehavior
     entity

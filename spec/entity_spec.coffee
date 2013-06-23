@@ -1,9 +1,10 @@
 {Entity} = require "../coffee/entity.coffee"
-{atom} = require "../spec/mock/atom_mock.coffee"
+{MoveBehavior} = require "../coffee/move_behavior.coffee"
 {Position} = require "../coffee/position.coffee"
 {UserInputMoveBehavior} = require "../coffee/user_input_move_behavior.coffee"
-{util} = require "../coffee/util.coffee"
+{atom} = require "../spec/mock/atom_mock.coffee"
 {jasmine_env} = require "../spec/jasmine_env.coffee"
+{util} = require "../coffee/util.coffee"
 
 describe "An entity", ->
   entity = undefined
@@ -17,7 +18,7 @@ describe "An entity", ->
     entity.setPos x: atom.width / 2, y: atom.height / 2
     entity.setRadius 2
     entity.setSpeed 1
-    entity.setMoveBehavior_ new UserInputMoveBehavior
+    entity.setMoveBehavior new UserInputMoveBehavior
 
   it "can have its position set", ->
     expect(entity.getPos()).toEqual x: 50, y: 75
@@ -85,3 +86,29 @@ describe "An entity", ->
     origPos = entity.getPos()
     entity.update 1
     expect(entity.getPos()).toEqual origPos
+
+  it "reports its direction is left when moving left", ->
+    atom.input.press 'left'
+    entity.update 1
+    expect(entity.getDirection()).toBe 'left'
+
+  it "reports its direction is down when moving down", ->
+    atom.input.press 'down'
+    entity.update 1
+    expect(entity.getDirection()).toBe 'down'
+
+  it "reports its direction is right when moving diagonally up and right", ->
+    atom.input.press 'up'
+    atom.input.press 'right'
+    entity.update 1
+    expect(entity.getDirection()).toBe 'right'
+
+  it "reports its direction is down when no movement has happened yet", ->
+    expect(entity.getDirection()).toBe 'down'
+
+  it "reports its direction is the last reported direction when it stops", ->
+    atom.input.press 'up'
+    entity.update 1
+    entity.moveBehavior_ = null
+    entity.update 1
+    expect(entity.getDirection()).toBe 'up'
