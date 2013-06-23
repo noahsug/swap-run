@@ -9,6 +9,7 @@ exports.Entity = class Entity
     @radius_ = 10
     @active_ = true
     @currentDirection_ = 'down'
+    @wasMoving_ = false
     @setSpeed 200
 
   getType: -> @type_
@@ -39,11 +40,18 @@ exports.Entity = class Entity
   isMoving: ->
     @velocityVector_? and (@velocityVector_.x != 0 or @velocityVector_.y != 0)
 
+  startedMoving: ->
+    @isMoving() and not @wasMoving_
+
+  stoppedMoving: ->
+    @wasMoving_ and not @isMoving()
+
   isActive: -> @active_
   die: -> @active_ = false
 
   update: (dt) ->
     if @moveBehavior_
+      @wasMoving_ = @isMoving()
       @move_ dt
       @updateDirection_()
 

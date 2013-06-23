@@ -128,3 +128,25 @@ describe "An entity", ->
 
   it "reports that its not moving when it has never moved", ->
     expect(entity.isMoving()).toBe false
+
+  it "when moving, reports that it started moving only after the first update", ->
+    expect(entity.startedMoving()).toBe false
+    atom.input.press 'up'
+    entity.update 1
+    expect(entity.startedMoving()).toBe true
+    entity.update 1
+    expect(entity.startedMoving()).toBe false
+    atom.input.release 'up'
+    entity.update 1
+    expect(entity.startedMoving()).toBe false
+
+  it "when not moving, reports that it stopped moving only after the first update", ->
+    expect(entity.stoppedMoving()).toBe false
+    atom.input.press 'up'
+    entity.update 1
+    expect(entity.stoppedMoving()).toBe false
+    atom.input.release 'up'
+    entity.update 1
+    expect(entity.stoppedMoving()).toBe true
+    entity.update 1
+    expect(entity.stoppedMoving()).toBe false
