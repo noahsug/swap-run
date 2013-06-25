@@ -5,3 +5,5 @@ exports.EntityGraphic = class EntityGraphic
   draw: (context) ->
 
   update: ->
+
+  stop: ->

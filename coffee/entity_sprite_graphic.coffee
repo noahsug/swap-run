@@ -28,3 +28,6 @@ exports.EntitySpriteGraphic = class EntitySpriteGraphic extends EntityGraphic
 
   isFinishedLoading_: ->
     @spriteMap_.baseImage?
+
+  stop: ->
+    @spriteMap_.stop()

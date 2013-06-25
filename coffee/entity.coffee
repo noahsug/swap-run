@@ -51,6 +51,7 @@ exports.Entity = class Entity
   isActive: -> @active_
   die: ->
     @active_ = false
+    @graphic_.stop()
 
   update: (dt) ->
     if @moveBehavior_
