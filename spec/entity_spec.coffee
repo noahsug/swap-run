@@ -1,4 +1,5 @@
 {Entity} = require "../coffee/entity.coffee"
+{EntityFactory} = require "../coffee/entity_factory.coffee"
 {MoveBehavior} = require "../coffee/move_behavior.coffee"
 {Position} = require "../coffee/position.coffee"
 {UserInputMoveBehavior} = require "../coffee/user_input_move_behavior.coffee"
@@ -7,7 +8,7 @@
 {util} = require "../coffee/util.coffee"
 
 describe "An entity", ->
-  entity = undefined
+  entity = graphic = undefined
   atom.width = 100
   atom.height = 150
 
@@ -19,6 +20,8 @@ describe "An entity", ->
     entity.setRadius 2
     entity.setSpeed 1
     entity.setMoveBehavior new UserInputMoveBehavior
+    graphic = new jasmine.createSpyObj 'graphic', ['draw', 'update', 'setEntity']
+    entity.setGraphic graphic
 
   it "can have its position set", ->
     expect(entity.getPos()).toEqual x: 50, y: 75
@@ -150,3 +153,18 @@ describe "An entity", ->
     expect(entity.stoppedMoving()).toBe true
     entity.update 1
     expect(entity.stoppedMoving()).toBe false
+
+  it "can be drawn", ->
+    expect(graphic.draw).not.toHaveBeenCalled()
+    entity.draw 'context'
+    expect(graphic.draw).toHaveBeenCalledWith 'context'
+
+  it "can be represented using sprite animation", ->
+    entity = EntityFactory.create 'player'
+    expect(entity.graphic_.spriteMap_.activeLoop).toBe 'down'
+    expect(entity.graphic_.spriteMap_.isAnimating()).toBe false
+
+    atom.input.press 'right'
+    entity.update .05
+    expect(entity.graphic_.spriteMap_.activeLoop).toBe 'right'
+    expect(entity.graphic_.spriteMap_.isAnimating()).toBe true

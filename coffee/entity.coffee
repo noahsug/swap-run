@@ -1,3 +1,4 @@
+{EntityGraphic} = require "../coffee/entity_graphic.coffee"
 {Position} = require "../coffee/position.coffee"
 {atom} = require "../spec/mock/atom_mock.coffee"
 {util} = require "../coffee/util.coffee"
@@ -7,10 +8,11 @@ exports.Entity = class Entity
   constructor: (@type_) ->
     @pos_ = { x: 0, y: 0 }
     @radius_ = 10
-    @active_ = true
-    @currentDirection_ = 'down'
-    @wasMoving_ = false
     @setSpeed 200
+    @active_ = true
+    @wasMoving_ = false
+    @currentDirection_ = 'down'
+    @graphic_ = new EntityGraphic
 
   getType: -> @type_
 
@@ -47,13 +49,21 @@ exports.Entity = class Entity
     @wasMoving_ and not @isMoving()
 
   isActive: -> @active_
-  die: -> @active_ = false
+  die: ->
+    @active_ = false
 
   update: (dt) ->
     if @moveBehavior_
       @wasMoving_ = @isMoving()
       @move_ dt
       @updateDirection_()
+    @graphic_.update()
+
+  setGraphic: (@graphic_) ->
+    @graphic_.setEntity this
+
+  draw: (context) ->
+    @graphic_.draw context
 
   move_: (dt) ->
     @velocityVector_ = @moveBehavior_.getVelocityVector()

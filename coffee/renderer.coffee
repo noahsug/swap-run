@@ -1,32 +1,6 @@
-{Sprite} = require "../spec/mock/sprite_mock.coffee"
 {SpriteMap} = require "../spec/mock/sprite_map_mock.coffee"
 
 exports.Renderer = class Renderer
-  constructor: ->
-    @loadedAllSprites_ = false
-    @spriteMap_ = new SpriteMap '../assets/femaleleatherpreview_0.png', {
-      'up':
-        startRow: 8
-        endRow: 8
-        endCol: 8
-      'left':
-        startRow: 9
-        endRow: 9
-        endCol: 8
-      'down':
-        startRow: 10
-        endRow: 10
-        endCol: 8
-      'right':
-        startRow: 11
-        endRow: 11
-        endCol: 8
-      }, {
-        frameW: 64
-        frameH: 64
-        postInitCallback: =>
-          @loadedAllSprites_ = true
-      }
 
   draw: (@game_) ->
     switch @game_.getState()
@@ -45,20 +19,7 @@ exports.Renderer = class Renderer
     atom.context.fillRect 0, 0, atom.width, atom.height
 
   drawPlayer_: ->
-    player = @game_.getPlayer()
-    x = player.getPos().x - @spriteMap_.sprite.frameW / 2
-    y = player.getPos().y - @spriteMap_.sprite.frameH / 2
-    if @loadedAllSprites_
-      if @spriteMap_.activeLoop isnt player.getDirection()
-        @spriteMap_.use player.getDirection()
-        if player.isMoving() and not player.startedMoving()
-          @spriteMap_.start()
-      if not player.isMoving()
-        @spriteMap_.stop()
-        @spriteMap_.reset()
-      if player.startedMoving()
-        @spriteMap_.start()
-      @spriteMap_.draw atom.context, x, y
+    @game_.getPlayer().draw atom.context
 
   drawEnemies_: ->
     atom.context.fillStyle = 'red'

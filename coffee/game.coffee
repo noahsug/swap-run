@@ -62,7 +62,8 @@ exports.Game = class Game extends atom.Game
     @updateEntities_ dt
     @checkCollisions_()
     @removeInactive_()
-    @state_ = 'lost' if !@player_.isActive()
+    unless @player_.isActive()
+      @state_ = 'lost'
 
   updateEntities_: (dt) ->
     for enemy in @enemies_
