@@ -49,9 +49,7 @@ exports.Entity = class Entity
     @wasMoving_ and not @isMoving()
 
   isActive: -> @active_
-  die: ->
-    @active_ = false
-    @graphic_.stop()
+  die: -> @active_ = false
 
   update: (dt) ->
     if @moveBehavior_

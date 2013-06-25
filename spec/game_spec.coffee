@@ -93,9 +93,3 @@ describe "A game", ->
     expect(getEnemy(0).getPos()).toEqual origPlayerPos
     playerDistanceFromOrigEnemyPos = util.distance origEnemyPos, player.getPos()
     expect(playerDistanceFromOrigEnemyPos).toAlmostBe getEnemy(0).getSpeed() * dt
-
-  it "entities stop their animations when the game ends", ->
-    atom.input.hold 'up'
-    tick 20
-    expect(state).toBe 'lost'
-    expect(player.graphic_.spriteMap_.isAnimating()).toBe false

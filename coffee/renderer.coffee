@@ -1,6 +1,8 @@
 {SpriteMap} = require "../spec/mock/sprite_map_mock.coffee"
 
 exports.Renderer = class Renderer
+  constructor: ->
+    @prevGameState = 'started'
 
   draw: (@game_) ->
     switch @game_.getState()
@@ -11,28 +13,16 @@ exports.Renderer = class Renderer
 
   drawPlayScreen_: ->
     @drawBackground_()
-    @drawPlayer_()
-    @drawEnemies_()
+    @drawEntities_()
 
   drawBackground_: ->
     atom.context.fillStyle = '2E2E2E'
     atom.context.fillRect 0, 0, atom.width, atom.height
 
-  drawPlayer_: ->
+  drawEntities_: ->
     @game_.getPlayer().draw atom.context
-
-  drawEnemies_: ->
-    atom.context.fillStyle = 'red'
     for enemy in @game_.getEnemies()
-      @drawEntity_ enemy
-
-  drawEntity_: (entity) ->
-    x = entity.getPos().x
-    y = entity.getPos().y
-    atom.context.beginPath()
-    atom.context.arc x, y, entity.getRadius(), 0, 2 * Math.PI
-    atom.context.closePath()
-    atom.context.fill()
+      enemy.draw atom.context
 
   drawScoreScreen_: ->
     @drawPlayScreen_()

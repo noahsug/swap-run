@@ -3,8 +3,6 @@ exports.SpriteMap = class SpriteMap
     @finishLoading()
     @frame_ = 0
 
-  stop: ->
-
   draw: (context, x, y) ->
     @throwIfNotLoaded()
 
