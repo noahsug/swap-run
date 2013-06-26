@@ -9,8 +9,8 @@ exports.BackgroundGraphic = class BackgroundGraphic
 
   fill: (context, xOffset, yOffset, width, height) ->
     return unless @isLoaded_()
-    for col in [0..width / @tile_.frameW]
-      for row in [0..height / @tile_.frameH]
+    for col in [0..(width - 1) / @tile_.frameW]
+      for row in [0..(height - 1) / @tile_.frameH]
         @selectFrame_ col, row
         x = xOffset + col * @tile_.frameW
         y = yOffset + row * @tile_.frameH
