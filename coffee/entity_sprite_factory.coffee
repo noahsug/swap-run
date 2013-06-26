@@ -1,8 +1,8 @@
 {EntitySpriteGraphic} = require "../coffee/entity_sprite_graphic.coffee"
 {SpriteMap} = require "../spec/mock/sprite_map_mock.coffee"
 
-exports.SpriteFactory = class SpriteFactory
-  @instance_ = new SpriteFactory
+exports.EntitySpriteFactory = class EntitySpriteFactory
+  @instance_ = new EntitySpriteFactory
 
   @create = (type) ->
     @instance_.create type
@@ -17,26 +17,26 @@ exports.SpriteFactory = class SpriteFactory
   creationMethods_:
     "player": ->
       new SpriteMap '../assets/bald_female.png', {
-        'up':
-          startRow: 8
-          endRow: 8
-          endCol: 8
-        'left':
-          startRow: 9
-          endRow: 9
-          endCol: 8
-        'down':
-          startRow: 10
-          endRow: 10
-          endCol: 8
-        'right':
-          startRow: 11
-          endRow: 11
-          endCol: 8
-        }, {
-          frameW: 64
-          frameH: 64
-        }
+          'up':
+            startRow: 8
+            endRow: 8
+            endCol: 8
+          'left':
+            startRow: 9
+            endRow: 9
+            endCol: 8
+          'down':
+            startRow: 10
+            endRow: 10
+            endCol: 8
+          'right':
+            startRow: 11
+            endRow: 11
+            endCol: 8
+          }, {
+            frameW: 64
+            frameH: 64
+      }
 
     "enemy": ->
       new SpriteMap '../assets/purple_female.png', {

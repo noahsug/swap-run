@@ -1,6 +1,6 @@
 {Entity} = require "../coffee/entity.coffee"
 {Player} = require "../coffee/player.coffee"
-{SpriteFactory} = require "../coffee/sprite_factory.coffee"
+{EntitySpriteFactory} = require "../coffee/entity_sprite_factory.coffee"
 {TrackingMoveBehavior} = require "../coffee/tracking_move_behavior.coffee"
 {UserInputMoveBehavior} = require "../coffee/user_input_move_behavior.coffee"
 
@@ -22,7 +22,7 @@ exports.EntityFactory = class EntityFactory
       entity.setRadius 14
       entity.setSpeed 200
       entity.setMoveBehavior new UserInputMoveBehavior
-      entity.setGraphic SpriteFactory.create @type_
+      entity.setGraphic EntitySpriteFactory.create @type_
       entity
 
     "enemy": ->
@@ -30,5 +30,5 @@ exports.EntityFactory = class EntityFactory
       entity.setRadius 16
       entity.setSpeed 150
       entity.setMoveBehavior new TrackingMoveBehavior
-      entity.setGraphic SpriteFactory.create @type_
+      entity.setGraphic EntitySpriteFactory.create @type_
       entity

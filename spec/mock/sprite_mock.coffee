@@ -1,0 +1,1 @@
+exports.Sprite = class Sprite

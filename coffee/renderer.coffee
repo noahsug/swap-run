@@ -1,8 +1,8 @@
-{SpriteMap} = require "../spec/mock/sprite_map_mock.coffee"
+{GraphicFactory} = require "../coffee/graphic_factory.coffee"
 
 exports.Renderer = class Renderer
   constructor: ->
-    @prevGameState = 'started'
+    @backgroundGraphic_ = GraphicFactory.create 'background'
 
   draw: (@game_) ->
     switch @game_.getState()
@@ -16,8 +16,8 @@ exports.Renderer = class Renderer
     @drawEntities_()
 
   drawBackground_: ->
-    atom.context.fillStyle = '2E2E2E'
-    atom.context.fillRect 0, 0, atom.width, atom.height
+    atom.context.clearRect 0, 0, atom.width, atom.height
+    @backgroundGraphic_.fill atom.context, 0, 0, atom.width, atom.height
 
   drawEntities_: ->
     @game_.getPlayer().draw atom.context
