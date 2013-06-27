@@ -1,4 +1,5 @@
 {GraphicFactory} = require "../coffee/graphic_factory.coffee"
+{atom} = require "../spec/mock/atom_mock.coffee"
 
 exports.Renderer = class Renderer
   constructor: ->
@@ -20,10 +21,10 @@ exports.Renderer = class Renderer
     @backgroundGraphic_.fill atom.context, 0, 0, atom.width, atom.height
 
   drawEntities_: ->
-    for entity in @game_.getEntities().sort @entityYCoordSort_
+    for entity in @game_.getEntities().sort @yCoordComparator_
       entity.draw atom.context
 
-  entityYCoordSort_: (e1, e2) ->
+  yCoordComparator_: (e1, e2) ->
     e1.getPos().y > e2.getPos().y
 
   drawScoreScreen_: ->

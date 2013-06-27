@@ -3,6 +3,12 @@ exports.atom =
   width: 100
   height: 150
 
+  context:
+    setAlpha: ->
+    fillRect: ->
+    fillText: ->
+    clearRect: ->
+
   Game: class Game
 
   input:

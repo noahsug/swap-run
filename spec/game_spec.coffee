@@ -5,7 +5,7 @@
 {util} = require "../coffee/util.coffee"
 
 describe "A game", ->
-  game = state = enemies = player = undefined
+  game = gameInfo = state = enemies = player = undefined
   atom.width = 100
   atom.height = 150
   dt = .05
@@ -13,9 +13,9 @@ describe "A game", ->
   tick = (num=1) ->
     for i in [1..num]
       game.update dt
-    player = game.getPlayer()
-    state = game.getState()
-    enemies = game.getEnemies()
+    player = gameInfo.getPlayer()
+    state = gameInfo.getState()
+    enemies = gameInfo.getEnemies()
 
   addEnemy = (pos) ->
     enemy = EntityFactory.create 'enemy'
@@ -25,10 +25,11 @@ describe "A game", ->
   beforeEach ->
     jasmine_env.init this
     game = new Game()
+    gameInfo = game.gameInfo_
     tick()
 
   getEnemy = (num) ->
-    game.getEnemies()[num]
+    gameInfo.getEnemies()[num]
 
   it "is initially in the 'playing' state", ->
     expect(state).toBe 'playing'
@@ -67,7 +68,7 @@ describe "A game", ->
     atom.input.press 'swap'
     tick()
     expect(state).toBe 'playing'
-    expect(game.getPlayer().getPos()).toEqual x: 50, y: 75
+    expect(gameInfo.getPlayer().getPos()).toEqual x: 50, y: 75
     expect(enemies.length).toBe 0
 
   it "has enemies that are removed when they collide", ->
@@ -77,12 +78,12 @@ describe "A game", ->
   it "keeps track of score", ->
     addEnemy getEnemy(0).getPos()
     tick()
-    expect(game.getScore()).toBe 2
+    expect(gameInfo.getScore()).toBe 2
 
   it "scores the enemy that hits the player", ->
     getEnemy(0).setPos player.getPos()
     tick()
-    expect(game.getScore()).toBe 1
+    expect(gameInfo.getScore()).toBe 1
 
   it "has a player that swaps position when the swap key is pressed", ->
     atom.input.press 'swap'

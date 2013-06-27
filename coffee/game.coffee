@@ -1,6 +1,6 @@
 {EntityFactory} = require "../coffee/entity_factory.coffee"
 {EnemySpawner} = require "../coffee/enemy_spawner.coffee"
-{Knowledge} = require "../coffee/knowledge.coffee"
+{GameInfo} = require "../coffee/game_info.coffee"
 {Renderer} = require "../coffee/renderer.coffee"
 {atom} = require "../spec/mock/atom_mock.coffee"
 {keybindings} = require "../coffee/keybindings.coffee"
@@ -11,92 +11,71 @@ exports.Game = class Game extends atom.Game
   constructor: ->
     super
     keybindings.configure()
-    @renderer_ = new Renderer()
+    @renderer_ = new Renderer
+    @gameInfo_ = new GameInfo
     @init_()
 
   init_: ->
-    @state_ = 'playing'
-    @initKnowledge_()
-    @initPlayer_ @knowledge_
+    @gameInfo_.reset()
+    @initPlayer_()
     @initEnemySpawner_()
-    @score_ = 0
 
-  initKnowledge_: ->
-    @knowledge_ = new Knowledge
-    @knowledge_.setGameInfo this
-
-  initPlayer_: (knowledge) ->
-    @player_ = EntityFactory.create "player"
-    @player_.setKnowledge knowledge
-    @player_.setPos { x: atom.width / 2, y: atom.height / 2 }
-
-  getPlayer: -> @player_
+  initPlayer_: ->
+    player = EntityFactory.create "player"
+    player.setKnowledge @gameInfo_
+    player.setPos { x: atom.width / 2, y: atom.height / 2 }
+    @gameInfo_.setPlayer player
 
   initEnemySpawner_: ->
-    @enemies_ = []
     @spawner_ = new EnemySpawner()
     @spawner_.on 'spawn', (enemy) =>
       @addEnemy_ enemy
 
   addEnemy_: (enemy) ->
-    enemy.setKnowledge @knowledge_
-    @enemies_.push enemy
+    @gameInfo_.addEnemy enemy
+    enemy.setKnowledge @gameInfo_
 
-  getEnemies: -> @enemies_
+  restart_: ->
+    @init_()
 
-  getEntities: ->
-    [@player_, @enemies_...]
+  draw: ->
+    @renderer_.draw @gameInfo_
 
-  getState: -> @state_
-
-  getScore: -> @score_
+  resize: ->
+    @draw()
 
   update: (dt) ->
-    switch @state_
+    switch @gameInfo_.getState()
       when 'playing' then @updatePlaying_ dt
       when 'lost' then @updateEndGame_()
 
   updateEndGame_: ->
     if atom.input.down 'swap'
-      @restartGame_()
+      @restart_()
 
   updatePlaying_: (dt) ->
     @spawner_.update dt
     @updateEntities_ dt
     @checkCollisions_()
     @removeInactive_()
-    unless @player_.isActive()
-      @state_ = 'lost'
+    @checkGameOver_()
 
   updateEntities_: (dt) ->
-    for enemy in @enemies_
+    # Update player last so swapped enemies go to player's last location.
+    for enemy in @gameInfo_.getEnemies()
       enemy.update dt
-    @player_.update dt
+    @gameInfo_.getPlayer().update dt
 
   checkCollisions_: ->
-    entities = @getEntities()
-    for i in [0..entities.length-2] by 1
-      entity1 = entities[i]
-      for j in [i+1..entities.length-1] by 1
-        entity2 = entities[j]
-        if @entitiesCollide_ entity1, entity2
-          entity1.die()
-          entity2.die()
-
-  entitiesCollide_: (entity1, entity2) ->
-    distance = util.distance entity1.getPos(), entity2.getPos()
-    distance < entity1.getRadius() + entity2.getRadius()
+    for entity in @gameInfo_.getCollidedEntities()
+      entity.die()
 
   removeInactive_: ->
-    prevNumEnemies = @enemies_.length
-    @enemies_ = (e for e in @enemies_ when e.isActive())
-    @score_ += prevNumEnemies - @enemies_.length
+    prevNumEnemies = @gameInfo_.getEnemies().length
+    activeEnemies = @gameInfo_.getActiveEnemies()
+    @gameInfo_.setEnemies activeEnemies
+    @gameInfo_.addScore prevNumEnemies - activeEnemies.length
 
-  restartGame_: ->
-    @init_()
-
-  draw: ->
-    @renderer_.draw this
-
-  resize: ->
-    @draw()
+  checkGameOver_: ->
+    unless @gameInfo_.getPlayer().isActive()
+      @gameInfo_.setState 'lost'

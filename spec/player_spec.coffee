@@ -1,7 +1,6 @@
 {Entity} = require "../coffee/entity.coffee"
+{GameInfo} = require "../coffee/game_info.coffee"
 {Player} = require "../coffee/player.coffee"
-{Knowledge} = require "../coffee/knowledge.coffee"
-{MockGameInfo} = require "../spec/mock/mock_game_info.coffee"
 {atom} = require "../spec/mock/atom_mock.coffee"
 
 describe "A player", ->
@@ -10,17 +9,14 @@ describe "A player", ->
   beforeEach ->
     atom.input.reset()
     player = new Player()
-    enemy = new Entity()
     player.setPos x: 50, y: 100
-    enemy.setPos x: 20, y: 35
-    player.setKnowledge createKnowledge()
 
-  createKnowledge = ->
-    gameInfo = new MockGameInfo
+    enemy = new Entity()
+    enemy.setPos x: 20, y: 35
+
+    gameInfo = new GameInfo
     gameInfo.setEnemies [enemy]
-    knowledge = new Knowledge
-    knowledge.setGameInfo gameInfo
-    return knowledge
+    player.setKnowledge gameInfo
 
   it "swaps positions with the nearest enemy when the swap key is pressed", ->
     atom.input.press 'swap'
