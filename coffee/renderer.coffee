@@ -20,9 +20,11 @@ exports.Renderer = class Renderer
     @backgroundGraphic_.fill atom.context, 0, 0, atom.width, atom.height
 
   drawEntities_: ->
-    @game_.getPlayer().draw atom.context
-    for enemy in @game_.getEnemies()
-      enemy.draw atom.context
+    for entity in @game_.getEntities().sort @entityYCoordSort_
+      entity.draw atom.context
+
+  entityYCoordSort_: (e1, e2) ->
+    e1.getPos().y > e2.getPos().y
 
   drawScoreScreen_: ->
     @drawPlayScreen_()

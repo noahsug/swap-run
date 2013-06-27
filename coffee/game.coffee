@@ -44,6 +44,9 @@ exports.Game = class Game extends atom.Game
 
   getEnemies: -> @enemies_
 
+  getEntities: ->
+    [@player_, @enemies_...]
+
   getState: -> @state_
 
   getScore: -> @score_
@@ -71,7 +74,7 @@ exports.Game = class Game extends atom.Game
     @player_.update dt
 
   checkCollisions_: ->
-    entities = [@enemies_..., @player_]
+    entities = @getEntities()
     for i in [0..entities.length-2] by 1
       entity1 = entities[i]
       for j in [i+1..entities.length-1] by 1
