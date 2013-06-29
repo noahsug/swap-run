@@ -39,3 +39,6 @@ exports.util =
 
   sign: (num) ->
     if num < 0 then -1 else 1
+
+  flipCoin: ->
+    Math.random() < .5

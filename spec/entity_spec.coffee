@@ -1,6 +1,7 @@
 {Entity} = require "../coffee/entity.coffee"
 {EntityFactory} = require "../coffee/entity_factory.coffee"
 {MoveBehavior} = require "../coffee/move_behavior.coffee"
+{MockMoveBehavior} = require "../spec/mock/mock_move_behavior.coffee"
 {Position} = require "../coffee/position.coffee"
 {UserInputMoveBehavior} = require "../coffee/user_input_move_behavior.coffee"
 {atom} = require "../spec/mock/atom_mock.coffee"
@@ -8,7 +9,7 @@
 {util} = require "../coffee/util.coffee"
 
 describe "An entity", ->
-  entity = graphic = undefined
+  moveBehavior = entity = graphic = undefined
   atom.width = 100
   atom.height = 150
 
@@ -22,6 +23,10 @@ describe "An entity", ->
     entity.setMoveBehavior new UserInputMoveBehavior
     graphic = new jasmine.createSpyObj 'graphic', ['draw', 'update', 'setEntity']
     entity.setGraphic graphic
+
+  useMockMoveBehavior = ->
+    moveBehavior = new MockMoveBehavior
+    entity.setMoveBehavior moveBehavior
 
   it "can have its position set", ->
     expect(entity.getPos()).toEqual x: 50, y: 75
@@ -122,10 +127,11 @@ describe "An entity", ->
     expect(entity.isMoving()).toBe true
 
   it "reports that its not moving when it stops moving", ->
-    atom.input.press 'up'
+    useMockMoveBehavior()
+    moveBehavior.move 'up'
     entity.update 1
     expect(entity.isMoving()).toBe true
-    atom.input.release 'up'
+    moveBehavior.stop()
     entity.update 1
     expect(entity.isMoving()).toBe false
 
@@ -133,22 +139,24 @@ describe "An entity", ->
     expect(entity.isMoving()).toBe false
 
   it "when moving, reports that it started moving only after the first update", ->
+    useMockMoveBehavior()
     expect(entity.startedMoving()).toBe false
-    atom.input.press 'up'
+    moveBehavior.move 'up'
     entity.update 1
     expect(entity.startedMoving()).toBe true
     entity.update 1
     expect(entity.startedMoving()).toBe false
-    atom.input.release 'up'
+    moveBehavior.stop()
     entity.update 1
     expect(entity.startedMoving()).toBe false
 
   it "when not moving, reports that it stopped moving only after the first update", ->
+    useMockMoveBehavior()
     expect(entity.stoppedMoving()).toBe false
-    atom.input.press 'up'
+    moveBehavior.move 'up'
     entity.update 1
     expect(entity.stoppedMoving()).toBe false
-    atom.input.release 'up'
+    moveBehavior.stop()
     entity.update 1
     expect(entity.stoppedMoving()).toBe true
     entity.update 1

@@ -1,11 +1,12 @@
 {Entity} = require "../coffee/entity.coffee"
 {EntitySpriteGraphic} = require "../coffee/entity_sprite_graphic.coffee"
+{MockMoveBehavior} = require "../spec/mock/mock_move_behavior.coffee"
 {UserInputMoveBehavior} = require "../coffee/user_input_move_behavior.coffee"
 {SpriteMap} = require "../spec/mock/sprite_map_mock.coffee"
 {atom} = require "../spec/mock/atom_mock.coffee"
 
 describe 'An entity sprite graphic', ->
-  graphic = entity = spriteMap = undefined
+  graphic = entity = spriteMap = moveBehavior = undefined
 
   beforeEach ->
     spriteMap = new SpriteMap
@@ -19,6 +20,10 @@ describe 'An entity sprite graphic', ->
   tick = ->
     entity.update .05
     graphic.update()
+
+  useMockMoveBehavior = ->
+    moveBehavior = new MockMoveBehavior
+    entity.setMoveBehavior moveBehavior
 
   it "is drawn centered at the entity's current location", ->
     spyOn spriteMap, 'draw'
@@ -39,37 +44,37 @@ describe 'An entity sprite graphic', ->
     expect(spriteMap.isAnimating()).toBe true
 
   it "shows the still frame for the entity's direction when the entity stops moving", ->
-    atom.input.press 'right'
+    useMockMoveBehavior()
+    moveBehavior.move 'right'
     tick()
-    atom.input.release 'right'
+    moveBehavior.stop()
     tick()
     expect(spriteMap.getFrame()).toBe 0
     expect(spriteMap.isAnimating()).toBe false
 
   it "changes to the corresponding animation when the entity changes direction", ->
-    atom.input.press 'up'
+    useMockMoveBehavior()
+    moveBehavior.move 'up'
     tick()
     expect(spriteMap.activeLoop).toBe 'up'
     expect(spriteMap.isAnimating()).toBe true
 
-    atom.input.press 'right'
+    moveBehavior.move 'up', 'right'
     tick()
     expect(spriteMap.activeLoop).toBe 'right'
     expect(spriteMap.isAnimating()).toBe true
 
-    atom.input.release 'right'
+    moveBehavior.move 'up'
     tick()
     expect(spriteMap.activeLoop).toBe 'up'
     expect(spriteMap.isAnimating()).toBe true
 
-    atom.input.release 'up'
-    atom.input.press 'left'
+    moveBehavior.move 'left'
     tick()
     expect(spriteMap.activeLoop).toBe 'left'
     expect(spriteMap.isAnimating()).toBe true
 
-    atom.input.release 'left'
-    atom.input.press 'down'
+    moveBehavior.move 'down'
     tick()
     expect(spriteMap.activeLoop).toBe 'down'
     expect(spriteMap.isAnimating()).toBe true
