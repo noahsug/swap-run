@@ -13,6 +13,8 @@ exports.Entity = class Entity
     @wasMoving_ = false
     @currentDirection_ = 'down'
     @graphic_ = new EntityGraphic
+    @reactionTime_ = 0
+    @timeUntilNextReaction_ = 0
 
   getType: -> @type_
 
@@ -28,6 +30,10 @@ exports.Entity = class Entity
 
   setSpeed: (@speed_) ->
   getSpeed: -> @speed_
+
+  setReactionTime: (@reactionTime_) ->
+    if @timeUntilNextReaction_ > @reactionTime_
+      @timeUntilNextReaction_ = @reactionTime_
 
   setKnowledge: (@knowledge_) ->
     @moveBehavior_?.setKnowledge @knowledge_
@@ -65,8 +71,18 @@ exports.Entity = class Entity
     @graphic_.draw context
 
   move_: (dt) ->
-    @velocityVector_ = @moveBehavior_.getVelocityVector()
+    if @canChangeMovement_ dt
+      @velocityVector_ = @moveBehavior_.getVelocityVector()
     @updatePosition_ dt
+
+  canChangeMovement_: (dt) ->
+    return true if @reactionTime_ < dt
+    if @timeUntilNextReaction_ < dt
+      @timeUntilNextReaction_ = (@timeUntilNextReaction_ - dt) + @reactionTime_
+      true
+    else
+      @timeUntilNextReaction_ -= dt
+      false
 
   updatePosition_:  (dt) ->
     @pos_.x += @velocityVector_.x * @speed_ * dt

@@ -29,6 +29,7 @@ exports.EntityFactory = class EntityFactory
       entity = new Entity(@type_)
       entity.setRadius 16
       entity.setSpeed 150
+      entity.setReactionTime .3754
       entity.setMoveBehavior new TrackingMoveBehavior
       entity.setGraphic EntitySpriteFactory.create @type_
       entity

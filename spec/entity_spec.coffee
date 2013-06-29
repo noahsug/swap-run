@@ -176,3 +176,36 @@ describe "An entity", ->
     entity.update .05
     expect(entity.graphic_.spriteMap_.activeLoop).toBe 'right'
     expect(entity.graphic_.spriteMap_.isAnimating()).toBe true
+
+  it "doesn't change its movement right away when given a high reaction time", ->
+    useMockMoveBehavior()
+    entity.setReactionTime 1
+    moveBehavior.move 'down'
+    entity.update .25
+    moveBehavior.move 'up'
+    entity.update .5
+    expect(entity.getPos()).toEqual x: 50, y: 75.75
+    entity.update .5
+    expect(entity.getPos()).toEqual x: 50, y: 75.25
+
+  it "can change reaction time at any time", ->
+    useMockMoveBehavior()
+    entity.setReactionTime 100
+    moveBehavior.move 'down'
+    entity.update 1
+
+    entity.setReactionTime 0
+    moveBehavior.move 'up'
+    entity.update 1
+    expect(entity.getPos()).toEqual x: 50, y: 75
+
+    entity.setReactionTime 100
+    entity.update 1
+    expect(entity.getPos()).toEqual x: 50, y: 74
+
+    entity.setReactionTime 2.5
+    moveBehavior.move 'down'
+    entity.update 1
+    entity.update 1
+    entity.update 1
+    expect(entity.getPos()).toEqual x: 50, y: 73

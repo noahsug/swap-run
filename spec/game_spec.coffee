@@ -44,6 +44,7 @@ describe "A game", ->
     expect(updatedDistance - distance).toBeLessThan 0
 
   it "ends when an enemy collides with a player", ->
+    getEnemy(0).setReactionTime 0
     x = player.getPos().x + getEnemy(0).getRadius() + player.getRadius()
     y = player.getPos().y
     getEnemy(0).setPos { x, y }
@@ -93,4 +94,5 @@ describe "A game", ->
     tick()
     expect(getEnemy(0).getPos()).toEqual origPlayerPos
     playerDistanceFromOrigEnemyPos = util.distance origEnemyPos, player.getPos()
-    expect(playerDistanceFromOrigEnemyPos).toAlmostBe getEnemy(0).getSpeed() * dt
+    distanceEnemyTravelled = getEnemy(0).getSpeed() * dt
+    expect(playerDistanceFromOrigEnemyPos).toAlmostBeLessThanOrEqualTo distanceEnemyTravelled

@@ -11,10 +11,21 @@ exports.jasmine_env =
   addMatchers_: ->
     @test.addMatchers
       toBeBetween: (a, b) ->
-        a < this.actual < b
+        a < @actual < b
 
       toBeAnInstanceOf: (clazz) ->
-        this.actual instanceof clazz
+        @actual instanceof clazz
 
       toAlmostBe: (expected, sigDigAccuracy=4) ->
-        this.actual.toFixed(sigDigAccuracy) is expected.toFixed(sigDigAccuracy)
+        @actual.toFixed(sigDigAccuracy) is expected.toFixed(sigDigAccuracy)
+
+      toBeLessThanOrEqualTo: (expected) ->
+        @actual <= expected
+
+      toBeLessThanOrEqualTo: (expected, sigDigAccuracy=4) ->
+        @actual <= expected
+
+      toAlmostBeLessThanOrEqualTo: (expected, sigDigAccuracy=4) ->
+        actual = parseFloat @actual.toFixed(sigDigAccuracy)
+        expected = parseFloat expected.toFixed(sigDigAccuracy)
+        actual <= expected
