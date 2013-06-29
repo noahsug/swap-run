@@ -26,10 +26,21 @@ exports.EntityFactory = class EntityFactory
       entity
 
     "enemy": ->
-      entity = new Entity(@type_)
+      entity = @createBasicEnemy_()
       entity.setRadius 16
       entity.setSpeed 150
       entity.setReactionTime .3754
-      entity.setMoveBehavior new TrackingMoveBehavior
-      entity.setGraphic EntitySpriteFactory.create @type_
       entity
+
+    "bat": ->
+      entity = @createBasicEnemy_()
+      entity.setRadius 16
+      entity.setSpeed 200
+      entity.setReactionTime .5754
+      entity
+
+  createBasicEnemy_: ->
+    entity = new Entity(@type_)
+    entity.setMoveBehavior new TrackingMoveBehavior
+    entity.setGraphic EntitySpriteFactory.create @type_
+    entity

@@ -33,9 +33,7 @@ describe 'An entity sprite graphic', ->
     expect(spriteMap.draw).toHaveBeenCalledWith('context', x, y)
 
   it "initially shows the still-moving frame for the entity's direction", ->
-    expect(spriteMap.activeLoop).toBe entity.getDirection()
-    expect(spriteMap.getFrame()).toBe 0
-    expect(spriteMap.isAnimating()).toBe false
+    expect(spriteMap.activeLoop).toBe 'down-still'
 
   it "loops through the walking animation for the entity's current direction", ->
     atom.input.press 'right'
@@ -49,8 +47,7 @@ describe 'An entity sprite graphic', ->
     tick()
     moveBehavior.stop()
     tick()
-    expect(spriteMap.getFrame()).toBe 0
-    expect(spriteMap.isAnimating()).toBe false
+    expect(spriteMap.activeLoop).toBe 'right-still'
 
   it "changes to the corresponding animation when the entity changes direction", ->
     useMockMoveBehavior()

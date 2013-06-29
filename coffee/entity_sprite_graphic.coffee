@@ -6,7 +6,7 @@ exports.EntitySpriteGraphic = class EntitySpriteGraphic extends EntityGraphic
 
   setEntity: (@entity_) ->
     return unless @isLoaded_()
-    @spriteMap_.use @entity_.getDirection()
+    @spriteMap_.start @getDesiredAnimation_()
 
   draw: (context) ->
     return unless @isLoaded_()
@@ -16,15 +16,13 @@ exports.EntitySpriteGraphic = class EntitySpriteGraphic extends EntityGraphic
 
   update: ->
     return unless @isLoaded_()
-    if @spriteMap_.activeLoop isnt @entity_.getDirection()
-      @spriteMap_.use @entity_.getDirection()
-      if @entity_.isMoving() and not @entity_.startedMoving()
-        @spriteMap_.start()
-    if not @entity_.isMoving()
-      @spriteMap_.stop()
-      @spriteMap_.reset()
-    if @entity_.startedMoving()
-      @spriteMap_.start()
+    desiredAnimation = @getDesiredAnimation_()
+    if @spriteMap_.activeLoop isnt desiredAnimation
+      @spriteMap_.start desiredAnimation
 
   isLoaded_: ->
     @spriteMap_.baseImage?
+
+  getDesiredAnimation_: ->
+    stillSuffix = if @entity_.isMoving() then '' else '-still'
+    @entity_.getDirection() + stillSuffix

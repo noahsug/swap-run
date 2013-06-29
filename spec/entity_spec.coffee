@@ -169,8 +169,7 @@ describe "An entity", ->
 
   it "can be represented using sprite animation", ->
     entity = EntityFactory.create 'player'
-    expect(entity.graphic_.spriteMap_.activeLoop).toBe 'down'
-    expect(entity.graphic_.spriteMap_.isAnimating()).toBe false
+    expect(entity.graphic_.spriteMap_.activeLoop).toBe 'down-still'
 
     atom.input.press 'right'
     entity.update .05

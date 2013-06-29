@@ -17,7 +17,8 @@ exports.EnemySpawner = class EnemySpawner extends EventEmitter
       @timeUntilSpawn_ += @spawnTime_
 
   spawn_: ->
-    enemy = EntityFactory.create "enemy"
+    type = if util.flipCoin() then "enemy" else "bat"
+    enemy = EntityFactory.create type
     enemyPos = @getRandomBorderPos_ enemy.getRadius()
     enemy.setPos enemyPos
     @emit "spawn", enemy
