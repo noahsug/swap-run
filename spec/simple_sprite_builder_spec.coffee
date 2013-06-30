@@ -14,22 +14,25 @@ describe 'A simple sprite builder', ->
         'up-still': {} }
     sprite = builder.build 'poop.png', animations
 
-    animation = { startRow: 1, endRow: 1, startCol: undefined, endCol: 3 }
-    expect(sprite.animations['right']).toEqual animation
-    expect(sprite.animations['left']).toEqual animation
+    expect(sprite.animations['right']).toEqual {
+        startRow: 1, endRow: 1, endCol: 3 }
 
-    animation = { startRow: 4, endRow: 4, startCol: undefined, endCol: undefined }
-    expect(sprite.animations['up']).toEqual animation
+    expect(sprite.animations['left']).toEqual {
+        startRow: 1, endRow: 1, endCol: 3, flipped: { horizontal: true } }
 
-    animation = { startRow: 7, endRow: 7, startCol: undefined, endCol: 3 }
-    expect(sprite.animations['down']).toEqual animation
+    expect(sprite.animations['up']).toEqual {
+        startRow: 4, endRow: 4, endCol: undefined }
 
-    animation = { startRow: 2, endRow: 2, startCol: undefined, endCol: 1 }
-    expect(sprite.animations['right-still']).toEqual animation
-    expect(sprite.animations['left-still']).toEqual animation
+    expect(sprite.animations['down']).toEqual {
+        startRow: 7, endRow: 7, endCol: 3 }
 
-    animation = { startRow: 5, endRow: 5, startCol: undefined, endCol: undefined }
-    expect(sprite.animations['up-still']).toEqual animation
+    expect(sprite.animations['right-still']).toEqual {
+        startRow: 2, endRow: 2, endCol: 1 }
 
-    animation = { startRow: 6, endRow: 6, startCol: undefined, endCol: 1 }
-    expect(sprite.animations['down-still']).toEqual animation
+    expect(sprite.animations['left-still']).toEqual {
+        startRow: 2, endRow: 2, endCol: 1, flipped: { horizontal: true } }
+
+    expect(sprite.animations['up-still']).toEqual { startRow: 5, endRow: 5 }
+
+    expect(sprite.animations['down-still']).toEqual {
+        startRow: 6, endRow: 6, endCol: 1 }

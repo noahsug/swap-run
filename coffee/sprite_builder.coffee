@@ -18,6 +18,7 @@ exports.SpriteBuilder = class SpriteBuilder
       endRow: option.endRow ? option.row
       startCol: option.startCol
       endCol: option.endCol
+      flipped: option.flipped
 
   getAnimationNames_: ->
     ['right', 'left', 'up', 'down',

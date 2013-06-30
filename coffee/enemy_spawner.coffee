@@ -19,6 +19,7 @@ exports.EnemySpawner = class EnemySpawner extends EventEmitter
   spawn_: ->
     type = util.randElement ['enemy', 'bat', 'ogre', 'spectre', 'deathknight',
         'skeleton']
+    type = 'bat'
     enemy = EntityFactory.create type
     enemyPos = @getRandomBorderPos_ enemy.getRadius()
     enemy.setPos enemyPos

@@ -24,15 +24,12 @@ describe 'A sprite builder', ->
     sprite = builder.build 'poop.png', animations
 
     for dir in ['right', 'left', 'down']
-      animation = { startRow: 1, endRow: 1, startCol: undefined, endCol: 3 }
-      expect(sprite.animations[dir]).toEqual animation
+      expect(sprite.animations[dir]).toEqual {
+           startRow: 1, endRow: 1, endCol: 3 }
 
     for dir in ['right-still', 'left-still', 'down-still']
-      animation = { startRow: 2, endRow: 2, startCol: undefined, endCol: 1 }
-      expect(sprite.animations[dir]).toEqual animation
+      expect(sprite.animations[dir]).toEqual {
+          startRow: 2, endRow: 2, endCol: 1 }
 
-    upAnimation = { startRow: 1, endRow: undefined, startCol: undefined, endCol: undefined }
-    expect(sprite.animations['up']).toEqual upAnimation
-
-    upStillAnimation = { startRow: undefined, endRow: 0, startCol: undefined, endCol: undefined }
-    expect(sprite.animations['up-still']).toEqual upStillAnimation
+    expect(sprite.animations['up']).toEqual { startRow: 1  }
+    expect(sprite.animations['up-still']).toEqual { endRow: 0 }

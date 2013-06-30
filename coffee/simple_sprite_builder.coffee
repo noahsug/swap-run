@@ -14,8 +14,16 @@ exports.SimpleSpriteBuilder = class SimpleSpriteBuilder extends SpriteBuilder
 
   addAnimations_: ->
     super()
+    @setAnimationRows_()
+    @flipLeftAnimations_()
+
+  setAnimationRows_: ->
     startingIndex = if @options_.hasDeath then 1 else 0
     for animationName in @getAnimationNames_()
       row = startingIndex + @animationRows_[animationName]
       @animations_[animationName].startRow = row
       @animations_[animationName].endRow = row
+
+  flipLeftAnimations_: ->
+    for animationName in ['left', 'left-still']
+      @animations_[animationName].flipped = { horizontal: true }
