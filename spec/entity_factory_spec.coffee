@@ -18,6 +18,12 @@ describe "An entity factory", ->
     expect(entity.getType()).toBe "enemy"
     expect(entity.moveBehavior_).toBeAnInstanceOf TrackingMoveBehavior
 
+  it "can create an wide array of enemies", ->
+    types = ['enemy', 'bat', 'ogre', 'deathknight', 'skeleton']
+    for type in types
+      entity = EntityFactory.create type
+      expect(entity.getType()).toBe type
+
   it "throws an error when creating an unsupported entity type", ->
     failingFunction = -> EntityFactory.create "not supported"
     expect(failingFunction).toThrow()

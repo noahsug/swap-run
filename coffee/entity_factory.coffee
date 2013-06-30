@@ -1,20 +1,12 @@
 {Entity} = require "../coffee/entity.coffee"
+{Factory} = require "../coffee/factory.coffee"
 {Player} = require "../coffee/player.coffee"
 {EntitySpriteFactory} = require "../coffee/entity_sprite_factory.coffee"
 {TrackingMoveBehavior} = require "../coffee/tracking_move_behavior.coffee"
 {UserInputMoveBehavior} = require "../coffee/user_input_move_behavior.coffee"
 
-exports.EntityFactory = class EntityFactory
-  @instance_ = new EntityFactory
-
-  @create = (type) ->
-    @instance_.create type
-
-  create: (@type_) ->
-    if @type_ of @creationMethods_
-      @creationMethods_[@type_].apply(this)
-    else
-      throw "entity of type '#{@type_}' was not found"
+exports.EntityFactory = class EntityFactory extends Factory
+  @create = (type) -> Factory.create this, type
 
   creationMethods_:
     "player": ->
@@ -37,6 +29,34 @@ exports.EntityFactory = class EntityFactory
       entity.setRadius 16
       entity.setSpeed 200
       entity.setReactionTime .5754
+      entity
+
+    "ogre": ->
+      entity = @createBasicEnemy_()
+      entity.setRadius 32
+      entity.setSpeed 75
+      entity.setReactionTime .7754
+      entity
+
+    "spectre": ->
+      entity = @createBasicEnemy_()
+      entity.setRadius 18
+      entity.setSpeed 150
+      entity.setReactionTime .2754
+      entity
+
+    "skeleton": ->
+      entity = @createBasicEnemy_()
+      entity.setRadius 16
+      entity.setSpeed 100
+      entity.setReactionTime .6754
+      entity
+
+    "deathknight": ->
+      entity = @createBasicEnemy_()
+      entity.setRadius 25
+      entity.setSpeed 175
+      entity.setReactionTime .1754
       entity
 
   createBasicEnemy_: ->

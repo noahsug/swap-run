@@ -1,5 +1,5 @@
 exports.SpriteMap = class SpriteMap
-  constructor: ->
+  constructor: (@path, @animations, @options)  ->
     @finishLoading()
     @frame_ = 0
 

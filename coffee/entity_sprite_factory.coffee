@@ -1,136 +1,57 @@
 {EntitySpriteGraphic} = require "../coffee/entity_sprite_graphic.coffee"
+{Factory} = require "../coffee/factory.coffee"
+{SpriteBuilder} = require "../coffee/sprite_builder.coffee"
+{SimpleSpriteBuilder} = require "../coffee/simple_sprite_builder.coffee"
 {SpriteMap} = require "../spec/mock/sprite_map_mock.coffee"
 
-exports.EntitySpriteFactory = class EntitySpriteFactory
-  @instance_ = new EntitySpriteFactory
+exports.EntitySpriteFactory = class EntitySpriteFactory extends Factory
+  @create: (type) -> Factory.create this, type
 
-  @create = (type) ->
-    @instance_.create type
+  constructor: ->
+    @spriteBuilder_ = new SpriteBuilder
+    @simpleSpriteBuilder_ = new SimpleSpriteBuilder
 
-  create: (@type_) ->
-    if @type_ of @creationMethods_
-      spriteMap = @creationMethods_[@type_].apply(this)
-      new EntitySpriteGraphic spriteMap
-    else
-      throw "sprite of type '#{@type_}' was not found"
+  processResult_: (spriteMap) ->
+    new EntitySpriteGraphic spriteMap
 
   creationMethods_:
-    "player": ->
-      new SpriteMap '../assets/bald_female.png', {
-          'up':
-            startRow: 8
-            endRow: 8
-            startCol: 1
-            endCol: 8
-          'left':
-            startRow: 9
-            endRow: 9
-            startCol: 1
-            endCol: 8
-          'down':
-            startRow: 10
-            endRow: 10
-            startCol: 1
-            endCol: 8
-          'right':
-            startRow: 11
-            endRow: 11
-            startCol: 1
-            endCol: 8
-          'up-still':
-            startRow: 8
-            endRow: 8
-            endCol: 0
-          'left-still':
-            startRow: 9
-            endRow: 9
-            endCol: 0
-          'down-still':
-            startRow: 10
-            endRow: 10
-            endCol: 0
-          'right-still':
-            startRow: 11
-            endRow: 11
-            endCol: 0
-          }, {
-            frameW: 64
-            frameH: 64
-            interval: 75
-      }
+    'player': -> @createIPCSprite_ 'bald_female.png'
 
-    "enemy": ->
-      new SpriteMap '../assets/purple_female.png', {
-        'up':
-          startRow: 8
-          endRow: 8
-          startCol: 1
-          endCol: 8
-        'right':
-          startRow: 11
-          endRow: 11
-          startCol: 1
-          endCol: 8
-        'left':
-          startRow: 9
-          endRow: 9
-          startCol: 1
-          endCol: 8
-        'down':
-          startRow: 10
-          endRow: 10
-          startCol: 1
-          endCol: 8
-        'up-still':
-          startRow: 8
-          endRow: 8
-          endCol: 0
-        'left-still':
-          startRow: 9
-          endRow: 9
-          endCol: 0
-        'down-still':
-          startRow: 10
-          endRow: 10
-          endCol: 0
-        'right-still':
-          startRow: 11
-          endRow: 11
-          endCol: 0
-        }, {
-          frameW: 64
-          frameH: 64
-          interval: 75
-        }
+    'enemy': -> @createIPCSprite_ 'purple_female.png'
 
-    "bat": ->
-      new SpriteMap '../assets/bat.png', {
-        'up':
-          startRow: 3
-          endRow: 3
-        'left':
-          startRow: 0
-          endRow: 0
-        'down':
-          startRow: 6
-          endRow: 6
-        'right':
-          startRow: 0
-          endRow: 0
-        'up-still':
-          startRow: 3
-          endRow: 3
-        'left-still':
-          startRow: 0
-          endRow: 0
-        'down-still':
-          startRow: 6
-          endRow: 6
-        'right-still':
-          startRow: 0
-          endRow: 0
-        }, {
-          frameW: 64
-          frameH: 96
-          interval: 100
-        }
+    'bat': -> @simpleSpriteBuilder_.build 'bat.png', { frameH: 96 }
+
+    'ogre': -> @simpleSpriteBuilder_.build 'ogre.png', {
+        'still': { endCol: 1 }
+        'up': { endCol: 4 }
+        frameW: 96, frameH: 96, interval: 125 }
+
+    'spectre': -> @simpleSpriteBuilder_.build 'spectre.png', {
+        'moving': { endCol: 3 }
+        'up': {}
+        'still': { endCol: 1 }
+        'up-still': {}
+        frameW: 68, frameH: 68, interval: 150 }
+
+    'skeleton': -> @simpleSpriteBuilder_.build 'skeleton.png', {
+        'right-still': { endCol: 1 }
+        'left-still': { endCol: 1 }
+        'still': { endCol: 2 }
+        frameW: 96, frameH: 96, interval: 125 }
+
+    'deathknight': -> @simpleSpriteBuilder_.build 'deathknight.png', {
+        'moving': { endCol: 3 }
+        'still': { endCol: 1 }
+        frameW: 84, frameH: 84, interval: 125 }
+
+  createIPCSprite_: (fileName) ->
+    @spriteBuilder_.build fileName, {
+        'right': { row: 11, startCol: 1, endCol: 8 }
+        'left': { row: 9, startCol: 1, endCol: 8 }
+        'up': { row: 8, startCol: 1, endCol: 8 }
+        'down': { row: 10, startCol: 1, endCol: 8 }
+        'right-still': { row: 11, endCol: 0 }
+        'left-still': { row: 9, endCol: 0 }
+        'up-still': { row: 8, endCol: 0 }
+        'down-still': { row: 10, endCol: 0 }
+        frameW: 64, frameH: 64, interval: 75 }

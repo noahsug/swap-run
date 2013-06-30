@@ -1,17 +1,9 @@
 {BackgroundGraphic} = require "../coffee/background_graphic.coffee"
+{Factory} = require "../coffee/factory.coffee"
 {Sprite} = require "../spec/mock/sprite_mock.coffee"
 
-exports.GraphicFactory = class GraphicFactory
-  @instance_ = new GraphicFactory
-
-  @create = (type) ->
-    @instance_.create type
-
-  create: (@type_) ->
-    if @type_ of @creationMethods_
-      @creationMethods_[@type_].apply(this)
-    else
-      throw "graphic of type '#{@type_}' was not found"
+exports.GraphicFactory = class GraphicFactory extends Factory
+  @create = (type) -> Factory.create this, type
 
   creationMethods_:
     "background": ->
