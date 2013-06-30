@@ -21,7 +21,7 @@ exports.EntityFactory = class EntityFactory extends Factory
       entity = @createBasicEnemy_()
       entity.setRadius 16
       entity.setSpeed 150
-      entity.setReactionTime .3754
+      entity.setReactionTime 0
       entity
 
     "bat": ->
@@ -38,13 +38,6 @@ exports.EntityFactory = class EntityFactory extends Factory
       entity.setReactionTime .7754
       entity
 
-    "spectre": ->
-      entity = @createBasicEnemy_()
-      entity.setRadius 18
-      entity.setSpeed 150
-      entity.setReactionTime .2754
-      entity
-
     "skeleton": ->
       entity = @createBasicEnemy_()
       entity.setRadius 16
@@ -55,7 +48,14 @@ exports.EntityFactory = class EntityFactory extends Factory
     "deathknight": ->
       entity = @createBasicEnemy_()
       entity.setRadius 25
-      entity.setSpeed 175
+      entity.setSpeed 140
+      entity.setReactionTime .4754
+      entity
+
+    "spectre": ->
+      entity = @createBasicEnemy_()
+      entity.setRadius 18
+      entity.setSpeed 225
       entity.setReactionTime .1754
       entity
 

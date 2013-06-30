@@ -24,7 +24,7 @@ exports.EntitySpriteFactory = class EntitySpriteFactory extends Factory
     'ogre': -> @simpleSpriteBuilder_.build 'ogre.png', {
         'still': { endCol: 1 }
         'up': { endCol: 4 }
-        frameW: 96, frameH: 96, interval: 125 }
+        frameW: 96, frameH: 96, interval: 150 }
 
     'spectre': -> @simpleSpriteBuilder_.build 'spectre.png', {
         'moving': { endCol: 3 }
