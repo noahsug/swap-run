@@ -1,12 +1,15 @@
+{Entity} = require "../coffee/entity.coffee"
 {UserInputMoveBehavior} = require "../coffee/user_input_move_behavior.coffee"
 {atom} = require "../spec/mock/atom_mock.coffee"
 
 describe "User input move behavior", ->
-  movement = undefined
+  entity = movement = undefined
 
   beforeEach ->
     atom.input.reset()
     movement = new UserInputMoveBehavior()
+    entity = new Entity
+    movement.setMovingEntity entity
 
   tick = ->
     movement.getVelocityVector()
@@ -52,3 +55,8 @@ describe "User input move behavior", ->
     tick()
     atom.input.release 'down'
     expect(movement.getVelocityVector()).toEqual x: 1/Math.SQRT2, y: 1/Math.SQRT2
+
+  it "stops moving when the player becomes inactive", ->
+    entity.die()
+    atom.input.press 'left'
+    expect(movement.getVelocityVector()).toEqual x: 0, y: 0

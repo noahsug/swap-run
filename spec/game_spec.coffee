@@ -48,28 +48,17 @@ describe "A game", ->
     x = player.getPos().x + getEnemy(0).getRadius() + player.getRadius()
     y = player.getPos().y
     getEnemy(0).setPos { x, y }
-
     game.checkCollisions_()
+    expect(player.isActive()).toBe true
     expect(state).toBe 'playing'
+
     tick()
-    expect(state).toBe 'lost'
+    expect(state).toBe 'dying'
 
   it "kills enemies when they collide with each other", ->
     addEnemy getEnemy(0).getPos()
     expect(enemies.length).toBe 2
     tick()
-    expect(enemies.length).toBe 0
-
-  it "eventually ends if the player doesn't move", ->
-    tick 20
-    expect(state).toBe 'lost'
-
-  it "can be reset after it ends", ->
-    tick 20
-    atom.input.press 'swap'
-    tick()
-    expect(state).toBe 'playing'
-    expect(gameInfo.getPlayer().getPos()).toEqual x: 50, y: 75
     expect(enemies.length).toBe 0
 
   it "has enemies that are removed when they collide", ->
@@ -96,3 +85,38 @@ describe "A game", ->
     playerDistanceFromOrigEnemyPos = util.distance origEnemyPos, player.getPos()
     distanceEnemyTravelled = getEnemy(0).getSpeed() * dt
     expect(playerDistanceFromOrigEnemyPos).toAlmostBeLessThanOrEqualTo distanceEnemyTravelled
+
+  it "eventually ends if the player doesn't move", ->
+    tick 40
+    expect(state).toBe 'dying'
+
+  it "shows the game over screen after the player death animation finishes", ->
+    getEnemy(0).setPos player.getPos()
+    tick()
+    expect(state).toBe 'dying'
+
+    game.renderer_.deathAnimationFinished = -> true
+    tick()
+    expect(state).toBe 'lost'
+
+  it "can be reset after it ends", ->
+    game.renderer_.deathAnimationFinished = -> true
+    getEnemy(0).setPos player.getPos()
+    tick 2
+    expect(state).toBe 'lost'
+
+    atom.input.press 'swap'
+    tick()
+    expect(state).toBe 'playing'
+    expect(gameInfo.getPlayer().getPos()).toEqual x: 50, y: 75
+    expect(enemies.length).toBe 0
+
+  it "stops entities from moving after the player dies", ->
+    tick 40
+    expect(state).toBe 'dying'
+    origPositions = (entity.getPos() for entity in gameInfo.getEntities())
+
+    atom.input.press 'up'
+    tick 20
+    newPositions = (entity.getPos() for entity in gameInfo.getEntities())
+    expect(origPositions).toEqual newPositions

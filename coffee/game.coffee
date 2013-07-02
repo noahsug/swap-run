@@ -11,8 +11,8 @@ exports.Game = class Game extends atom.Game
   constructor: ->
     super
     keybindings.configure()
-    @renderer_ = new Renderer
     @gameInfo_ = new GameInfo
+    @renderer_ = new Renderer @gameInfo_
     @init_()
 
   init_: ->
@@ -39,19 +39,17 @@ exports.Game = class Game extends atom.Game
     @init_()
 
   draw: ->
-    @renderer_.draw @gameInfo_
+    @renderer_.draw()
 
   resize: ->
     @draw()
 
   update: (dt) ->
+    @renderer_.update dt
     switch @gameInfo_.getState()
       when 'playing' then @updatePlaying_ dt
+      when 'dying' then @updateDying_ dt
       when 'lost' then @updateEndGame_()
-
-  updateEndGame_: ->
-    if atom.input.down 'swap'
-      @restart_()
 
   updatePlaying_: (dt) ->
     @spawner_.update dt
@@ -61,7 +59,7 @@ exports.Game = class Game extends atom.Game
     @checkGameOver_()
 
   updateEntities_: (dt) ->
-    # Update player last so swapped enemies go to player's last location.
+    # Update player last so swapped enemies go to player's previous location.
     for enemy in @gameInfo_.getEnemies()
       enemy.update dt
     @gameInfo_.getPlayer().update dt
@@ -78,4 +76,13 @@ exports.Game = class Game extends atom.Game
 
   checkGameOver_: ->
     unless @gameInfo_.getPlayer().isActive()
+      @gameInfo_.setState 'dying'
+
+  updateDying_: (dt) ->
+    @updateEntities_ dt
+    if @renderer_.deathAnimationFinished()
       @gameInfo_.setState 'lost'
+
+  updateEndGame_: ->
+    if atom.input.down 'swap'
+      @restart_()
