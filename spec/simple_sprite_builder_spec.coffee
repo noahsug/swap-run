@@ -35,4 +35,4 @@ describe 'A simple sprite builder', ->
     expect(sprite.animations['up-still']).toEqual { startRow: 5, endRow: 5 }
 
     expect(sprite.animations['down-still']).toEqual {
-        startRow: 6, endRow: 6, endCol: 1 }
+        startRow: 8, endRow: 8, endCol: 1 }

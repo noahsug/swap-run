@@ -71,7 +71,9 @@ exports.Entity = class Entity
     @graphic_.draw context
 
   move_: (dt) ->
-    if @canChangeMovement_ dt
+    unless @isActive()
+      @velocityVector_.x = @velocityVector_.y = 0
+    else if @canChangeMovement_ dt
       @velocityVector_ = @moveBehavior_.getVelocityVector()
     @updatePosition_ dt
 

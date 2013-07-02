@@ -9,6 +9,7 @@ describe 'An entity sprite graphic', ->
   graphic = entity = spriteMap = moveBehavior = undefined
 
   beforeEach ->
+    atom.input.reset()
     spriteMap = new SpriteMap
     entity = new Entity
     entity.setPos x: 45, y: 55

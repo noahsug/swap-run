@@ -10,7 +10,7 @@ exports.Renderer = class Renderer
 
   initAnimations_: ->
     @fadeToBlackAnimation_ = new Animation
-    @fadeToBlackAnimation_.vary('alpha').from(0).to(1).forDuration(1)
+    @fadeToBlackAnimation_.vary('alpha').from(0).to(1).forDuration(1.75)
 
   update: (dt) ->
     switch @gameInfo_.getState()

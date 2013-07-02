@@ -208,3 +208,13 @@ describe "An entity", ->
     entity.update 1
     entity.update 1
     expect(entity.getPos()).toEqual x: 50, y: 73
+
+  it "stops moving as soon as it becomes inactive", ->
+    entity.setReactionTime 2.5
+    atom.input.press 'left'
+    entity.update 1
+    expect(entity.getPos()).toEqual x: 49, y: 75
+    entity.die()
+    entity.update 1
+    expect(entity.getPos()).toEqual x: 49, y: 75
+    expect(entity.isMoving()).toBe false

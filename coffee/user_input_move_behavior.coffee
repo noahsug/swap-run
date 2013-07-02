@@ -7,9 +7,7 @@ exports.UserInputMoveBehavior = class UserInputMoveBehavior extends MoveBehavior
     @history_ = [undefined, undefined]
 
   determineVelocityVector_: ->
-    unless @movingEntity_.isActive()
-      @velocityVector_.x = @velocityVector_.y = 0
-    else if @inputIsPressed_()
+    if @inputIsPressed_()
       @setNextVelocityVector_()
     else if @wasMovingDiagonally_()
       @keepMovingDiagonally_()

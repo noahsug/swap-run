@@ -17,8 +17,8 @@ describe "A game", ->
     state = gameInfo.getState()
     enemies = gameInfo.getEnemies()
 
-  addEnemy = (pos) ->
-    enemy = EntityFactory.create 'enemy'
+  addEnemy = (pos, type='enemy') ->
+    enemy = EntityFactory.create type
     game.addEnemy_ enemy
     enemy.setPos pos
 
@@ -111,12 +111,9 @@ describe "A game", ->
     expect(gameInfo.getPlayer().getPos()).toEqual x: 50, y: 75
     expect(enemies.length).toBe 0
 
-  it "stops entities from moving after the player dies", ->
-    tick 40
-    expect(state).toBe 'dying'
-    origPositions = (entity.getPos() for entity in gameInfo.getEntities())
-
-    atom.input.press 'up'
+  it "stops spawning entities after it has ended", ->
+    getEnemy(0).setPos player.getPos()
+    tick()
+    expect(enemies.length).toBe 0
     tick 20
-    newPositions = (entity.getPos() for entity in gameInfo.getEntities())
-    expect(origPositions).toEqual newPositions
+    expect(enemies.length).toBe 0
