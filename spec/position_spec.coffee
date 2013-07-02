@@ -23,3 +23,20 @@ describe "Position provides the following helper functions", ->
       clone = Position.clone orig
       orig.x = 5
       expect(Position.equals orig, clone).toBe false
+
+  describe "add", ->
+    it "adds two positions together", ->
+      pos1 = x: 5, y: 1
+      pos2 = x: 3, y: 9
+      expect(Position.add pos1, pos2).toEqual { x: 8, y: 10 }
+
+  describe "subtract", ->
+    it "subtracts two positions from each other", ->
+      pos1 = x: 5, y: 1
+      pos2 = x: 3, y: 9
+      expect(Position.subtract pos1, pos2).toEqual { x: 2, y: -8 }
+
+  describe "negate", ->
+    it "returns the point with its coordinate multiplied by -1", ->
+      pos = x: 5, y: -1
+      expect(Position.negate pos).toEqual { x: -5, y: 1 }

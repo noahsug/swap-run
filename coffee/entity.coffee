@@ -15,6 +15,7 @@ exports.Entity = class Entity
     @graphic_ = new EntityGraphic
     @reactionTime_ = 0
     @timeUntilNextReaction_ = 0
+    @velocityVector_ = { x: 0, y: 0 }
 
   getType: -> @type_
 
@@ -46,7 +47,7 @@ exports.Entity = class Entity
     @currentDirection_
 
   isMoving: ->
-    @velocityVector_? and (@velocityVector_.x != 0 or @velocityVector_.y != 0)
+    @velocityVector_.x != 0 or @velocityVector_.y != 0
 
   startedMoving: ->
     @isMoving() and not @wasMoving_
@@ -66,6 +67,8 @@ exports.Entity = class Entity
 
   setGraphic: (@graphic_) ->
     @graphic_.setEntity this
+
+  getGraphic: -> @graphic_
 
   draw: (context) ->
     @graphic_.draw context

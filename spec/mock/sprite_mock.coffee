@@ -12,8 +12,8 @@ exports.Sprite = class Sprite
   getFrameNum: -> @frame_
 
   load: ->
-    @frameW = 10
-    @frameH = 10
+    @frameW = 20
+    @frameH = 20
 
   unload: ->
     @frameW = null

@@ -17,5 +17,12 @@ exports.Player = class Player extends Entity
       nearestEnemy.setPos origPlayerPos
 
   restrictPosition_: ->
-    @pos_.x = util.bound @pos_.x, @getRadius(), atom.width - @getRadius()
-    @pos_.y = util.bound @pos_.y, @getRadius(), atom.height - @getRadius()
+    graphicPos = @graphic_.getPos()
+    if graphicPos.x + @graphic_.getWidth() > atom.width
+      @pos_.x -= graphicPos.x + @graphic_.getWidth() - atom.width
+    if graphicPos.x < 0
+      @pos_.x -= graphicPos.x
+    if graphicPos.y + @graphic_.getHeight() > atom.height
+      @pos_.y -= graphicPos.y + @graphic_.getHeight() - atom.height
+    if graphicPos.y < 0
+      @pos_.y -= graphicPos.y

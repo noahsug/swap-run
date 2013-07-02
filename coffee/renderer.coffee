@@ -33,10 +33,14 @@ exports.Renderer = class Renderer
 
   drawEntities_: ->
     for entity in @gameInfo_.getEntities().sort @yCoordComparator_
+      @drawShadow_ entity
       entity.draw atom.context
 
   yCoordComparator_: (e1, e2) ->
     e1.getPos().y > e2.getPos().y
+
+  drawShadow_: (entity) ->
+    # TODO
 
   drawDyingScreen_: ->
     @drawPlayScreen_()

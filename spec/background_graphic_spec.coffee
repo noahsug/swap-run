@@ -5,6 +5,8 @@ describe 'A background graphic', ->
 
   beforeEach ->
     bg = GraphicFactory.create 'background'
+    bg.tile_.frameH = bg.tile_.frameW = 10
+
 
   it 'fills an area with background tiles', ->
     spyOn bg.tile_, 'draw'

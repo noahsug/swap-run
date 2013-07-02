@@ -26,11 +26,11 @@ describe 'An entity sprite graphic', ->
     moveBehavior = new MockMoveBehavior
     entity.setMoveBehavior moveBehavior
 
-  it "is drawn centered at the entity's current location", ->
+  it "defaults to drawing the entity is centered near the bottom", ->
     spyOn spriteMap, 'draw'
     graphic.draw 'context'
     x = entity.getPos().x - spriteMap.sprite.frameW / 2
-    y = entity.getPos().y - spriteMap.sprite.frameH / 2
+    y = entity.getPos().y - spriteMap.sprite.frameH + entity.getRadius() / 2
     expect(spriteMap.draw).toHaveBeenCalledWith('context', x, y)
 
   it "initially shows the still-moving frame for the entity's direction", ->

@@ -1,3 +1,5 @@
+{Sprite} = require "../../spec/mock/sprite_mock.coffee"
+
 exports.SpriteMap = class SpriteMap
   constructor: (@path, @animations, @options)  ->
     @finishLoading()
@@ -6,9 +8,7 @@ exports.SpriteMap = class SpriteMap
   draw: (context, x, y) ->
     @throwIfNotLoaded()
 
-  sprite:
-    frameW: 16
-    frameH: 20
+  sprite: new Sprite
 
   use: (@activeLoop) ->
     @throwIfNotLoaded()
