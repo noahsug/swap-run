@@ -32,15 +32,45 @@ exports.Renderer = class Renderer
     @backgroundGraphic_.fill atom.context, 0, 0, atom.width, atom.height
 
   drawEntities_: ->
-    for entity in @gameInfo_.getEntities().sort @yCoordComparator_
+    entities = @gameInfo_.getEntities().sort @yCoordComparator_
+    for entity in entities
       @drawShadow_ entity
+    for entity in entities
       entity.draw atom.context
 
   yCoordComparator_: (e1, e2) ->
     e1.getPos().y > e2.getPos().y
 
   drawShadow_: (entity) ->
-    # TODO
+    if entity.getType() == 'enemy' or entity.getType() == 'player'
+      console.log entity.getType(), entity.getRadius()
+    atom.context.setAlpha .35
+    atom.context.fillStyle = 'black'
+    @fillEllipseFromCenter_ entity.getPos().x, entity.getPos().y,
+        entity.getRadius() * 2, entity.getRadius()
+    atom.context.setAlpha 1
+
+  fillEllipseFromCenter_: (cx, cy, w, h) ->
+    @fillEllipse_(cx - w/2.0, cy - h/2.0, w, h)
+
+  fillEllipse_: (x, y, w, h) ->
+    kappa = .5522848
+    ox = (w / 2) * kappa
+    oy = (h / 2) * kappa
+    xe = x + w
+    ye = y + h
+    xm = x + w / 2
+    ym = y + h / 2
+    ctx = atom.context
+
+    ctx.beginPath()
+    ctx.moveTo(x, ym)
+    ctx.bezierCurveTo(x, ym - oy, xm - ox, y, xm, y)
+    ctx.bezierCurveTo(xm + ox, y, xe, ym - oy, xe, ym)
+    ctx.bezierCurveTo(xe, ym + oy, xm + ox, ye, xm, ye)
+    ctx.bezierCurveTo(xm - ox, ye, x, ym + oy, x, ym)
+    ctx.fill()
+    ctx.closePath()
 
   drawDyingScreen_: ->
     @drawPlayScreen_()

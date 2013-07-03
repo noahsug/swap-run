@@ -8,6 +8,10 @@ exports.atom =
     fillRect: ->
     fillText: ->
     clearRect: ->
+    arc: ->
+    fill: ->
+    beginPath: ->
+    closePath: ->
 
   Game: class Game
 

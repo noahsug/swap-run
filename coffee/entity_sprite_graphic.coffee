@@ -25,10 +25,6 @@ exports.EntitySpriteGraphic = class EntitySpriteGraphic extends EntityGraphic
 
   getOffset: ->
     super()
-    if @offset_?
-      @offset_
-    else
-      x: 0, y: -@getHeight() / 2 + @entity_.getRadius() / 2
 
   draw: (context) ->
     return unless @isLoaded_()

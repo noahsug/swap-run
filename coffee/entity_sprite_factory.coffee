@@ -20,14 +20,18 @@ exports.EntitySpriteFactory = class EntitySpriteFactory extends Factory
 
     'bat': ->
       spriteMap = @simpleSpriteBuilder_.build 'bat.png', { frameH: 96 }
-      new EntitySpriteGraphic spriteMap
+      graphic = new EntitySpriteGraphic spriteMap
+      graphic.setOffset x: 0, y: -14
+      graphic
 
     'ogre': ->
       spriteMap = @simpleSpriteBuilder_.build 'ogre.png', {
           'still': { endCol: 1 }
           'up': { endCol: 4 }
           frameW: 96, frameH: 96, interval: 150 }
-      new EntitySpriteGraphic spriteMap
+      graphic = new EntitySpriteGraphic spriteMap
+      graphic.setOffset x: 0, y: -23
+      graphic
 
     'spectre': ->
       spriteMap = @simpleSpriteBuilder_.build 'spectre.png', {
@@ -36,7 +40,9 @@ exports.EntitySpriteFactory = class EntitySpriteFactory extends Factory
           'still': { endCol: 1 }
           'up-still': {}
         frameW: 68, frameH: 68, interval: 150 }
-      new EntitySpriteGraphic spriteMap
+      graphic = new EntitySpriteGraphic spriteMap
+      graphic.setOffset x: -2, y: -16
+      graphic
 
     'skeleton': ->
       spriteMap = @simpleSpriteBuilder_.build 'skeleton.png', {
@@ -44,14 +50,18 @@ exports.EntitySpriteFactory = class EntitySpriteFactory extends Factory
           'left-still': { endCol: 1 }
           'still': { endCol: 2 }
         frameW: 96, frameH: 96, interval: 125 }
-      new EntitySpriteGraphic spriteMap
+      graphic = new EntitySpriteGraphic spriteMap
+      graphic.setOffset x: 0, y: -20
+      graphic
 
     'deathknight': ->
       spriteMap = @simpleSpriteBuilder_.build 'deathknight.png', {
           'moving': { endCol: 3 }
           'still': { endCol: 1 }
           frameW: 84, frameH: 84, interval: 125 }
-      new EntitySpriteGraphic spriteMap
+      graphic = new EntitySpriteGraphic spriteMap
+      graphic.setOffset x: 0, y: -17
+      graphic
 
   createIPCSprite_: (fileName) ->
     spriteMap = @spriteBuilder_.build fileName, {
@@ -66,4 +76,5 @@ exports.EntitySpriteFactory = class EntitySpriteFactory extends Factory
         frameW: 64, frameH: 64, interval: 75 }
     graphic = new EntitySpriteGraphic spriteMap
     graphic.setWidth 22
+    graphic.setOffset x: 0, y: -28
     graphic
