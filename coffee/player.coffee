@@ -4,7 +4,7 @@
 
 exports.Player = class Player extends Entity
   update: (dt) ->
-    if atom.input.pressed 'swap' and @isActive()
+    if atom.input.pressed('swap') and @isActive()
       @swapPositionsWithNearestEnemy_()
     else super dt
     @restrictPosition_()

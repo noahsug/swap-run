@@ -5,11 +5,10 @@ exports.SpriteMap = class SpriteMap
     @finishLoading()
     @frame_ = 0
     @runningOnce_ = false
+    @sprite = new Sprite
 
   draw: (context, x, y) ->
     @throwIfNotLoaded()
-
-  sprite: new Sprite
 
   use: (@activeLoop) ->
     @throwIfNotLoaded()
