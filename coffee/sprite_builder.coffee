@@ -13,6 +13,7 @@ exports.SpriteBuilder = class SpriteBuilder
 
   addAnimation_: (name) ->
     option = @getOptionForAnimation_ name
+    return unless option
     @animations_[name] =
       startRow: option.startRow ? option.row
       endRow: option.endRow ? option.row
@@ -22,7 +23,7 @@ exports.SpriteBuilder = class SpriteBuilder
 
   getAnimationNames_: ->
     ['right', 'left', 'up', 'down',
-        'right-still', 'left-still', 'up-still', 'down-still']
+        'right-still', 'left-still', 'up-still', 'down-still', 'death']
 
   getOptionForAnimation_: (animationName) ->
     if not (animationName of @options_)

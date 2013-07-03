@@ -73,6 +73,7 @@ exports.EntitySpriteFactory = class EntitySpriteFactory extends Factory
         'left-still': { row: 9, endCol: 0 }
         'up-still': { row: 8, endCol: 0 }
         'down-still': { row: 10, endCol: 0 }
+        'death': { row: 20, endCol: 4 }
         frameW: 64, frameH: 64, interval: 75 }
     graphic = new EntitySpriteGraphic spriteMap
     graphic.setWidth 22

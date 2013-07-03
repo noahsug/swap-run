@@ -78,7 +78,6 @@ describe 'An entity sprite graphic', ->
     expect(spriteMap.isAnimating()).toBe true
 
   it "doesn't throw an error when trying to draw before the sprite is loaded", ->
-    graphic.setEntity entity
     spriteMap.unload()
     tick()
     atom.input.press 'up'
@@ -86,3 +85,9 @@ describe 'An entity sprite graphic', ->
     atom.input.press 'right'
     tick()
     graphic.draw()
+
+  it "shows the death animation when the entity dies", ->
+    entity.die()
+    tick()
+    expect(spriteMap.activeLoop).toBe 'death'
+    expect(spriteMap.isRunningOnce()).toBe true

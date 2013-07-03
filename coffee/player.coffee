@@ -10,9 +10,9 @@ exports.Player = class Player extends Entity
     @restrictPosition_()
 
   swapPositionsWithNearestEnemy_: ->
-    origPlayerPos = @getPos()
     nearestEnemy = @knowledge_.getNearestEnemyTo @getPos()
     if nearestEnemy
+      origPlayerPos = @getPos()
       @setPos nearestEnemy.getPos()
       nearestEnemy.setPos origPlayerPos
 

@@ -4,8 +4,7 @@ exports.EntitySpriteGraphic = class EntitySpriteGraphic extends EntityGraphic
   constructor: (@spriteMap_) ->
 
   setEntity: (@entity_) ->
-    return unless @isLoaded_()
-    @spriteMap_.start @getDesiredAnimation_()
+    @update()
 
   getWidth: ->
     if @width_?
@@ -45,11 +44,16 @@ exports.EntitySpriteGraphic = class EntitySpriteGraphic extends EntityGraphic
     return unless @isLoaded_()
     desiredAnimation = @getDesiredAnimation_()
     if @spriteMap_.activeLoop isnt desiredAnimation
-      @spriteMap_.start desiredAnimation
+      if desiredAnimation is 'death'
+        @spriteMap_.use desiredAnimation
+        @spriteMap_.runOnce()
+      else
+        @spriteMap_.start desiredAnimation
 
   isLoaded_: ->
     @spriteMap_.baseImage?
 
   getDesiredAnimation_: ->
+    return 'death' unless @entity_.isActive()
     stillSuffix = if @entity_.isMoving() then '' else '-still'
     @entity_.getDirection() + stillSuffix

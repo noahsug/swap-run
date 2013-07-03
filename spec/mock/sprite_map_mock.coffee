@@ -4,6 +4,7 @@ exports.SpriteMap = class SpriteMap
   constructor: (@path, @animations, @options)  ->
     @finishLoading()
     @frame_ = 0
+    @runningOnce_ = false
 
   draw: (context, x, y) ->
     @throwIfNotLoaded()
@@ -13,15 +14,24 @@ exports.SpriteMap = class SpriteMap
   use: (@activeLoop) ->
     @throwIfNotLoaded()
     @animating_ = false
+    @runningOnce_ = false
     @frame_ = 0
 
   start: (@activeLoop=@activeLoop) ->
     @throwIfNotLoaded()
     @animating_ = true
+    @runningOnce_ = false
+    @frame_ = Math.floor(Math.random() * 10)
+
+  runOnce: (@activeLoop=@activeLoop) ->
+    @throwIfNotLoaded()
+    @runningOnce_ = true
+    @animating_ = true
     @frame_ = Math.floor(Math.random() * 10)
 
   stop: ->
     @animating_ = false
+    @runningOnce_ = false
 
   reset: ->
     @frame_ = 0
@@ -31,6 +41,9 @@ exports.SpriteMap = class SpriteMap
 
   isAnimating: ->
     @animating_
+
+  isRunningOnce: ->
+    @runningOnce_
 
   isFinishedLoading: ->
     @baseImage?
