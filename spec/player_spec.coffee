@@ -33,6 +33,13 @@ describe "A player", ->
     expect(player.getPos()).toEqual enemyPos
     expect(enemy.getPos()).toEqual playerPos
 
+  it "can't swap positions after it has died", ->
+    player.die()
+    atom.input.press 'swap'
+    playerPos = player.getPos()
+    tick()
+    expect(player.getPos()).toEqual playerPos
+
   it "stops swapping positions after the initial swap button press", ->
     atom.input.hold 'swap'
     enemyPos = enemy.getPos()

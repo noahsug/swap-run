@@ -2,6 +2,7 @@ exports.Sprite = class Sprite
 
   constructor: ->
     @load()
+    @interval = 125
 
   draw: ->
 

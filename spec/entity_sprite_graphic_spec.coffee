@@ -91,3 +91,15 @@ describe 'An entity sprite graphic', ->
     tick()
     expect(spriteMap.activeLoop).toBe 'death'
     expect(spriteMap.isRunningOnce()).toBe true
+
+  it "can have different frame intervals for different animations", ->
+    graphic.setAnimationInterval 'death', 250
+
+    entity.die()
+    tick()
+    expect(spriteMap.sprite.interval).toBe 250
+
+    entity.active_ = true
+    atom.input.press 'right'
+    tick()
+    expect(spriteMap.sprite.interval).toBe 125

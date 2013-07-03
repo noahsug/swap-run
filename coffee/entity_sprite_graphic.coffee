@@ -2,9 +2,15 @@
 
 exports.EntitySpriteGraphic = class EntitySpriteGraphic extends EntityGraphic
   constructor: (@spriteMap_) ->
+    super
+    @animationIntervals_ = {}
+    @defaultInterval_ = undefined
 
   setEntity: (@entity_) ->
     @update()
+
+  setAnimationInterval: (animationName, interval) ->
+    @animationIntervals_[animationName] = interval
 
   getWidth: ->
     if @width_?
@@ -44,11 +50,17 @@ exports.EntitySpriteGraphic = class EntitySpriteGraphic extends EntityGraphic
     return unless @isLoaded_()
     desiredAnimation = @getDesiredAnimation_()
     if @spriteMap_.activeLoop isnt desiredAnimation
+      @setIntervalForAnimation_ desiredAnimation
       if desiredAnimation is 'death'
         @spriteMap_.use desiredAnimation
         @spriteMap_.runOnce()
       else
         @spriteMap_.start desiredAnimation
+
+  setIntervalForAnimation_: (animationName) ->
+    @defaultInterval_ ?= @spriteMap_.sprite.interval
+    interval = @animationIntervals_[animationName] ? @defaultInterval_
+    @spriteMap_.sprite.interval = interval
 
   isLoaded_: ->
     @spriteMap_.baseImage?

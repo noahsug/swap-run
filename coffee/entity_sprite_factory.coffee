@@ -21,7 +21,7 @@ exports.EntitySpriteFactory = class EntitySpriteFactory extends Factory
     'bat': ->
       spriteMap = @simpleSpriteBuilder_.build 'bat.png', { frameH: 96 }
       graphic = new EntitySpriteGraphic spriteMap
-      graphic.setOffset x: 0, y: -14
+      graphic.setOffset x: 0, y: -18
       graphic
 
     'ogre': ->
@@ -31,6 +31,7 @@ exports.EntitySpriteFactory = class EntitySpriteFactory extends Factory
           frameW: 96, frameH: 96, interval: 150 }
       graphic = new EntitySpriteGraphic spriteMap
       graphic.setOffset x: 0, y: -23
+      @setStillAnimationInterval_ graphic, 400
       graphic
 
     'spectre': ->
@@ -42,6 +43,8 @@ exports.EntitySpriteFactory = class EntitySpriteFactory extends Factory
         frameW: 68, frameH: 68, interval: 150 }
       graphic = new EntitySpriteGraphic spriteMap
       graphic.setOffset x: -2, y: -16
+      for animationName in ['right-still', 'left-still', 'down-still']
+        graphic.setAnimationInterval animationName, 400
       graphic
 
     'skeleton': ->
@@ -52,6 +55,7 @@ exports.EntitySpriteFactory = class EntitySpriteFactory extends Factory
         frameW: 96, frameH: 96, interval: 125 }
       graphic = new EntitySpriteGraphic spriteMap
       graphic.setOffset x: 0, y: -20
+      @setStillAnimationInterval_ graphic, 500
       graphic
 
     'deathknight': ->
@@ -61,6 +65,7 @@ exports.EntitySpriteFactory = class EntitySpriteFactory extends Factory
           frameW: 84, frameH: 84, interval: 125 }
       graphic = new EntitySpriteGraphic spriteMap
       graphic.setOffset x: 0, y: -17
+      @setStillAnimationInterval_ graphic, 400
       graphic
 
   createIPCSprite_: (fileName) ->
@@ -78,4 +83,9 @@ exports.EntitySpriteFactory = class EntitySpriteFactory extends Factory
     graphic = new EntitySpriteGraphic spriteMap
     graphic.setWidth 22
     graphic.setOffset x: 0, y: -28
+    graphic.setAnimationInterval 'death', 200
     graphic
+
+  setStillAnimationInterval_: (graphic, interval) ->
+    for animationName in ['right-still', 'left-still', 'up-still', 'down-still']
+      graphic.setAnimationInterval animationName, interval
