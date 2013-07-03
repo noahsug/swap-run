@@ -12,6 +12,12 @@ exports.EntityGraphic = class EntityGraphic
       y: @entity_.getPos().y - @getHeight() / 2 + @getOffset().y
     }
 
+  getCenter: ->
+    {
+      x: @entity_.getPos().x + @getOffset().x,
+      y: @entity_.getPos().y + @getOffset().y
+    }
+
   getOffset: ->
     @offset_ ? { x: 0, y: 0 }
 

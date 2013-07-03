@@ -6,6 +6,8 @@ exports.Sprite = class Sprite
 
   draw: ->
 
+  runLoop: ->
+
   frameNumberToRowCol: (num) ->
     { row: 0, col: num }
 

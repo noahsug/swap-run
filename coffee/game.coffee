@@ -76,6 +76,8 @@ exports.Game = class Game extends atom.Game
   checkCollisions_: ->
     for entity in @gameInfo_.getCollidedEntities()
       entity.die()
+      if entity.getType() isnt 'player'
+        @renderer_.drawEntityDeath entity
 
   removeInactive_: ->
     prevNumEnemies = @gameInfo_.getEnemies().length
@@ -89,7 +91,7 @@ exports.Game = class Game extends atom.Game
 
   updateDying_: (dt) ->
     @updateEntities_ dt
-    if @renderer_.deathAnimationFinished()
+    if @renderer_.playerDeathAnimationFinished()
       @gameInfo_.setState 'lost'
 
   updateEndGame_: ->

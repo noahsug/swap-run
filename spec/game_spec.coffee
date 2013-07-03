@@ -86,7 +86,7 @@ describe "A game", ->
     expect(playerDistanceFromOrigEnemyPos).toAlmostBeLessThanOrEqualTo distanceEnemyTravelled
 
   it "eventually ends if the player doesn't move", ->
-    tick 40
+    tick 70
     expect(state).toBe 'dying'
 
   it "shows the game over screen after the player death animation finishes", ->
@@ -94,12 +94,12 @@ describe "A game", ->
     tick()
     expect(state).toBe 'dying'
 
-    game.renderer_.deathAnimationFinished = -> true
+    game.renderer_.playerDeathAnimationFinished = -> true
     tick()
     expect(state).toBe 'lost'
 
   it "can be reset after it ends", ->
-    game.renderer_.deathAnimationFinished = -> true
+    game.renderer_.playerDeathAnimationFinished = -> true
     getEnemy(0).setPos player.getPos()
     tick 2
     expect(state).toBe 'lost'

@@ -12,6 +12,10 @@ exports.EntitySpriteGraphic = class EntitySpriteGraphic extends EntityGraphic
   setAnimationInterval: (animationName, interval) ->
     @animationIntervals_[animationName] = interval
 
+  stop: ->
+    return unless @isLoaded_()
+    @spriteMap_.stop()
+
   getWidth: ->
     if @width_?
       @width_
@@ -62,10 +66,10 @@ exports.EntitySpriteGraphic = class EntitySpriteGraphic extends EntityGraphic
     interval = @animationIntervals_[animationName] ? @defaultInterval_
     @spriteMap_.sprite.interval = interval
 
-  isLoaded_: ->
-    @spriteMap_.baseImage?
-
   getDesiredAnimation_: ->
     return 'death' unless @entity_.isActive()
     stillSuffix = if @entity_.isMoving() then '' else '-still'
     @entity_.getDirection() + stillSuffix
+
+  isLoaded_: ->
+    @spriteMap_.baseImage?

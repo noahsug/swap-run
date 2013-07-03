@@ -83,7 +83,6 @@ exports.EntitySpriteFactory = class EntitySpriteFactory extends Factory
     graphic = new EntitySpriteGraphic spriteMap
     graphic.setWidth 22
     graphic.setOffset x: 0, y: -28
-    graphic.setAnimationInterval 'death', 200
     graphic
 
   setStillAnimationInterval_: (graphic, interval) ->

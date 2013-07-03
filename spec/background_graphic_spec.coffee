@@ -7,7 +7,6 @@ describe 'A background graphic', ->
     bg = GraphicFactory.create 'background'
     bg.tile_.frameH = bg.tile_.frameW = 10
 
-
   it 'fills an area with background tiles', ->
     spyOn bg.tile_, 'draw'
     bg.fill 'context', 10, 50, 20, 60

@@ -5,12 +5,13 @@
 exports.Renderer = class Renderer
   constructor: (@gameInfo_) ->
     @prevState_ = 'none'
+    @deathAnimations_ = []
     @backgroundGraphic_ = GraphicFactory.create 'background'
     @initAnimations_()
 
   initAnimations_: ->
     @fadeToBlackAnimation_ = new Animation
-    @fadeToBlackAnimation_.vary('alpha').from(0).to(1).forDuration(1.75)
+    @fadeToBlackAnimation_.vary('alpha').from(0).to(1).forDuration(2)
 
   update: (dt) ->
     switch @gameInfo_.getState()
@@ -27,6 +28,7 @@ exports.Renderer = class Renderer
   drawPlayScreen_: ->
     @drawBackground_()
     @drawEntities_()
+    @drawDeaths_()
 
   drawBackground_: ->
     atom.context.clearRect 0, 0, atom.width, atom.height
@@ -38,6 +40,11 @@ exports.Renderer = class Renderer
       @drawShadow_ entity
     for entity in entities
       entity.draw atom.context
+
+  drawDeaths_: ->
+    for deathAnimation in @deathAnimations_
+      deathAnimation.draw atom.context
+    @deathAnimations_ = (a for a in @deathAnimations_ when a.isAnimating())
 
   yCoordComparator_: (e1, e2) ->
     e1.getPos().y > e2.getPos().y
@@ -83,7 +90,7 @@ exports.Renderer = class Renderer
     atom.context.fillRect 0, 0, atom.width, atom.height
     atom.context.setAlpha 1
 
-  deathAnimationFinished: ->
+  playerDeathAnimationFinished: ->
     @fadeToBlackAnimation_.isFinished()
 
   drawScoreScreen_: ->
@@ -106,3 +113,9 @@ exports.Renderer = class Renderer
     atom.context.textAlign = "center"
     atom.context.font = "100px helvetica"
     atom.context.fillText text, atom.width / 2, atom.height / 2
+
+  drawEntityDeath: (entity) ->
+    deathAnimation = GraphicFactory.create 'death'
+    deathAnimation.runOnce()
+    deathAnimation.setPos entity.getGraphic().getCenter()
+    @deathAnimations_.push deathAnimation

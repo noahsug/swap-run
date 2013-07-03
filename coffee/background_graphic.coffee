@@ -1,5 +1,8 @@
-exports.BackgroundGraphic = class BackgroundGraphic
+{Graphic} = require "../coffee/graphic.coffee"
+
+exports.BackgroundGraphic = class BackgroundGraphic extends Graphic
   constructor: (@tile_) ->
+    super @tile_
     @tileGrid_ = {}
     @frameRatios_ = [1]
 
@@ -36,6 +39,3 @@ exports.BackgroundGraphic = class BackgroundGraphic
   goToFrame_: (frameNum) ->
     {row, col} = @tile_.frameNumberToRowCol frameNum
     @tile_.setFrame row, col
-
-  isLoaded_: ->
-    @tile_.frameW?
