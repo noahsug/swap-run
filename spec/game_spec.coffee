@@ -76,11 +76,12 @@ describe "A game", ->
     expect(gameInfo.getScore()).toBe 1
 
   it "has a player that swaps position when the swap key is pressed", ->
-    atom.input.press 'swap'
-    getEnemy(0).setPos x: 20, y: 25
+    getEnemy(0).setPos x: 40, y: 40
     origPlayerPos = player.getPos()
     origEnemyPos = getEnemy(0).getPos()
+    atom.input.press 'swap'
     tick()
+
     expect(getEnemy(0).getPos()).toEqual origPlayerPos
     playerDistanceFromOrigEnemyPos = util.distance origEnemyPos, player.getPos()
     distanceEnemyTravelled = getEnemy(0).getSpeed() * dt
@@ -117,3 +118,8 @@ describe "A game", ->
     expect(enemies.length).toBe 0
     tick 20
     expect(enemies.length).toBe 0
+
+  it "can be paused", ->
+    atom.input.press 'pause'
+    tick()
+    expect(state).toBe 'paused'

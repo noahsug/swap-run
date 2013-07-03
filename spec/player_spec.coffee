@@ -4,25 +4,26 @@
 {Position} = require "../coffee/position.coffee"
 {Player} = require "../coffee/player.coffee"
 {atom} = require "../spec/mock/atom_mock.coffee"
+{jasmine_env} = require "../spec/jasmine_env.coffee"
 
 describe "A player", ->
   player = enemy = gameInfo = undefined
 
   beforeEach ->
-    atom.input.reset()
+    jasmine_env.init this
     player = new Player()
     player = EntityFactory.create 'player'
     player.setPos x: 50, y: 100
 
     enemy = new Entity()
-    enemy.setPos x: 20, y: 35
+    enemy.setPos x: 20, y: 40
 
     gameInfo = new GameInfo
     gameInfo.setEnemies [enemy]
     player.setKnowledge gameInfo
 
   tick = ->
-    player.update .05
+    player.update .03
 
   it "swaps positions with the nearest enemy when the swap key is pressed", ->
     atom.input.press 'swap'
@@ -58,4 +59,4 @@ describe "A player", ->
     player.setPos x: atom.width, y: atom.height
     tick()
     expect(player.getPos().x).toBeLessThan atom.width
-    expect(player.getPos().y).toBeLessThan atom.height
+    expect(player.getPos().y).toBeLessThanOrEqualTo atom.height

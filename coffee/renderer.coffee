@@ -21,6 +21,7 @@ exports.Renderer = class Renderer
       when 'playing' then @drawPlayScreen_()
       when 'dying' then @drawDyingScreen_()
       when 'lost' then @drawScoreScreen_()
+      when 'paused' then @drawPauseScreen_()
     @prevState_ = @gameInfo_.getState()
 
   drawPlayScreen_: ->
@@ -42,8 +43,6 @@ exports.Renderer = class Renderer
     e1.getPos().y > e2.getPos().y
 
   drawShadow_: (entity) ->
-    if entity.getType() == 'enemy' or entity.getType() == 'player'
-      console.log entity.getType(), entity.getRadius()
     atom.context.setAlpha .35
     atom.context.fillStyle = 'black'
     @fillEllipseFromCenter_ entity.getPos().x, entity.getPos().y,
@@ -92,8 +91,18 @@ exports.Renderer = class Renderer
     @drawScore_()
 
   drawScore_: ->
+    @broadcastMessage_ "score: #{@gameInfo_.getScore()}"
+
+  drawPauseScreen_: ->
+    if @prevState_ isnt 'paused'
+      atom.context.setAlpha .75
+      atom.context.fillStyle = 'black'
+      atom.context.fillRect 0, 0, atom.width, atom.height
+      atom.context.setAlpha 1
+      @broadcastMessage_ "paused"
+
+  broadcastMessage_: (text) ->
     atom.context.fillStyle = 'white'
     atom.context.textAlign = "center"
     atom.context.font = "100px helvetica"
-    atom.context.fillText "score: #{@gameInfo_.getScore()}",
-        atom.width / 2, atom.height / 2
+    atom.context.fillText text, atom.width / 2, atom.height / 2

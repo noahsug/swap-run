@@ -12,6 +12,8 @@ exports.atom =
     fill: ->
     beginPath: ->
     closePath: ->
+    moveTo: ->
+    bezierCurveTo: ->
 
   Game: class Game
 

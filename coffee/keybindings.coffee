@@ -13,3 +13,5 @@ exports.keybindings =
     atom.input.bind atom.key.S, 'down'
 
     atom.input.bind atom.key.SPACE, 'swap'
+
+    atom.input.bind atom.key.P, 'pause'
