@@ -15,6 +15,7 @@ exports.Player = class Player extends Entity
       origPlayerPos = @getPos()
       @setPos nearestEnemy.getPos()
       nearestEnemy.setPos origPlayerPos
+      nearestEnemy.makeSlowToReact()
 
   restrictPosition_: ->
     graphicPos = @graphic_.getPos()

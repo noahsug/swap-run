@@ -12,7 +12,7 @@ exports.EnemySpawner = class EnemySpawner extends EventEmitter
 
   update: (dt) ->
     @timeUntilSpawn_ -= dt
-    while @timeUntilSpawn_ <= 0
+    while @timeUntilSpawn_ < 0
       @spawn_()
       @timeUntilSpawn_ += @spawnTime_
 

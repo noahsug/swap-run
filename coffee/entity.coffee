@@ -36,6 +36,10 @@ exports.Entity = class Entity
     if @timeUntilNextReaction_ > @reactionTime_
       @timeUntilNextReaction_ = @reactionTime_
 
+  makeSlowToReact: ->
+    if @timeUntilNextReaction_ < @reactionTime_ / 2
+      @timeUntilNextReaction_ = @reactionTime_ / 2
+
   setKnowledge: (@knowledge_) ->
     @moveBehavior_?.setKnowledge @knowledge_
 
@@ -81,7 +85,7 @@ exports.Entity = class Entity
     @updatePosition_ dt
 
   canChangeMovement_: (dt) ->
-    return true if @reactionTime_ < dt
+    return true if @reactionTime_ <= dt
     if @timeUntilNextReaction_ < dt
       @timeUntilNextReaction_ = (@timeUntilNextReaction_ - dt) + @reactionTime_
       true
