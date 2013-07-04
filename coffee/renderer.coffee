@@ -111,7 +111,7 @@ exports.Renderer = class Renderer
   broadcastMessage_: (text) ->
     atom.context.fillStyle = 'white'
     atom.context.textAlign = "center"
-    atom.context.font = "100px helvetica"
+    atom.context.font = "100px Chelsea Market"
     atom.context.fillText text, atom.width / 2, atom.height / 2
 
   drawEntityDeath: (entity) ->
