@@ -3,7 +3,7 @@
 exports.BackgroundGraphic = class BackgroundGraphic extends Graphic
   constructor: (@tile_) ->
     super @tile_
-    @tileGrid_ = {}
+    @tileGrid_ = []
     @frameRatios_ = [1]
 
   setFrameOccurrenceRatios: (@frameRatios_) ->
@@ -20,13 +20,13 @@ exports.BackgroundGraphic = class BackgroundGraphic extends Graphic
         @tile_.draw context, x, y
 
   selectFrame_: (col, row) ->
-    key = "#{col},#{row}"
     frameNum = 0
-    if key of @tileGrid_
-      frameNum = @tileGrid_[key]
+    @tileGrid_[row] ?= []
+    if @tileGrid_[row][col]
+      frameNum = @tileGrid_[row][col]
     else
       frameNum = @chooseFrameNumber_()
-      @tileGrid_[key] = frameNum
+      @tileGrid_[row][col] = frameNum
     @goToFrame_ frameNum
 
   chooseFrameNumber_: ->
