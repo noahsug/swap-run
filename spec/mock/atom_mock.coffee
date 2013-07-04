@@ -17,6 +17,8 @@ exports.atom =
 
   Game: class Game
 
+  setDesiredSurfaceArea: ->
+
   input:
     down_: {}
     pressed_: {}

@@ -9,6 +9,7 @@
 exports.Game = class Game extends atom.Game
   constructor: ->
     super
+    atom.setDesiredSurfaceArea 500000
     keybindings.configure()
     @gameInfo_ = new GameInfo
     @renderer_ = new Renderer @gameInfo_
