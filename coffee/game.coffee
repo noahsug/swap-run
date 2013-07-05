@@ -56,9 +56,8 @@ exports.Game = class Game extends atom.Game
   listenToKeyboardShortcuts_: ->
     if atom.input.pressed 'pause'
       if @gameInfo_.getState() is 'paused'
-        @gameInfo_.setState @unpauseState_
-      else
-        @unpauseState_ = @gameInfo_.getState()
+        @gameInfo_.setState 'playing'
+      else if @gameInfo_.getState() is 'playing'
         @gameInfo_.setState 'paused'
 
   updatePlaying_: (dt) ->

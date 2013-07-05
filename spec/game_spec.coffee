@@ -117,7 +117,17 @@ describe "A game", ->
     tick 20
     expect(enemies.length).toBe 0
 
-  it "can be paused", ->
+  it "can be paused and unpaused", ->
     atom.input.press 'pause'
     tick()
     expect(state).toBe 'paused'
+    tick()
+    expect(state).toBe 'playing'
+
+  it "can only be paused when game is running", ->
+    getEnemy(0).setPos player.getPos()
+    tick()
+    expect(state).not.toBe 'playing'
+    atom.input.press 'pause'
+    tick()
+    expect(state).not.toBe 'paused'
