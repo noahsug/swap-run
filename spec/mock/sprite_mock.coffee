@@ -1,5 +1,9 @@
 exports.Sprite = class Sprite
 
+  @preloadImages: (images) ->
+    @preloadedImages ?= []
+    @preloadedImages.push images...
+
   constructor: ->
     @load()
     @interval = 125

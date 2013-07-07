@@ -1,3 +1,4 @@
+{GraphicFactory} = require "../coffee/graphic_factory.coffee"
 {SpriteMap} = require "../spec/mock/sprite_map_mock.coffee"
 
 exports.SpriteBuilder = class SpriteBuilder
@@ -41,7 +42,5 @@ exports.SpriteBuilder = class SpriteBuilder
       interval: @options_.interval ? 100
 
   buildSpriteMap_: ->
-    new SpriteMap @getSpritePath_(@imgName_), @animations_, @spriteOptions_
-
-  getSpritePath_: (fileName) ->
-    "../assets/#{fileName}"
+    filePath = GraphicFactory.getImagePath @imgName_
+    new SpriteMap filePath, @animations_, @spriteOptions_

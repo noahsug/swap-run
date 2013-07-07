@@ -1,6 +1,7 @@
 {Entity} = require "../coffee/entity.coffee"
 {GameInfo} = require "../coffee/game_info.coffee"
 {Renderer} = require "../coffee/renderer.coffee"
+{Sprite} = require "../spec/mock/sprite_mock.coffee"
 
 describe "A renderer", ->
   callCount = renderer = gameInfo = undefined
@@ -26,3 +27,10 @@ describe "A renderer", ->
     expect(entity2.drawCallOrder).toBeLessThan entity4.drawCallOrder
     expect(entity4.drawCallOrder).toBeLessThan entity3.drawCallOrder
     expect(entity3.drawCallOrder).toBeLessThan entity1.drawCallOrder
+
+  it "preloads images", ->
+    expectedFileNames = [ 'bat.png', 'bald_female.png', 'deathknight.png'
+        'skeleton.png', 'ogre.png', 'spectre.png', 'death.png', 'sand_tile.png' ]
+    expectedFilePaths = ("../assets/#{name}" for name in expectedFileNames)
+    for expectedFilePath in expectedFilePaths
+      expect(Sprite.preloadedImages).toContain expectedFilePath

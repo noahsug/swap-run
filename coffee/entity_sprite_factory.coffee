@@ -1,11 +1,16 @@
 {EntitySpriteGraphic} = require "../coffee/entity_sprite_graphic.coffee"
 {Factory} = require "../coffee/factory.coffee"
 {SpriteBuilder} = require "../coffee/sprite_builder.coffee"
+{GraphicFactory} = require "../coffee/graphic_factory.coffee"
 {SimpleSpriteBuilder} = require "../coffee/simple_sprite_builder.coffee"
 {SpriteMap} = require "../spec/mock/sprite_map_mock.coffee"
 
 exports.EntitySpriteFactory = class EntitySpriteFactory extends Factory
   @create: (type) -> Factory.create this, type
+
+  @getImagesToPreload: ->
+    GraphicFactory.getImagePaths 'bald_female.png', 'purple_female.png',
+        'bat.png', 'ogre.png', 'spectre.png', 'skeleton.png', 'deathknight.png'
 
   constructor: ->
     @spriteBuilder_ = new SpriteBuilder

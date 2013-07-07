@@ -6,9 +6,18 @@
 exports.GraphicFactory = class GraphicFactory extends Factory
   @create = (type) -> Factory.create this, type
 
+  @getImagesToPreload: ->
+    GraphicFactory.getImagePaths 'sand_tile.png', 'death.png'
+
+  @getImagePaths: (fileNames...) ->
+    (GraphicFactory.getImagePath(fileName) for fileName in fileNames)
+
+  @getImagePath: (fileName) ->
+    "../assets/#{fileName}"
+
   creationMethods_:
     "background": ->
-      sprite = new Sprite '../assets/sand_tile.png', {
+      sprite = new Sprite GraphicFactory.getImagePath('sand_tile.png'), {
         frameW: 96
         frameH: 96
       }
@@ -17,7 +26,7 @@ exports.GraphicFactory = class GraphicFactory extends Factory
       background
 
     "death": ->
-      sprite = new Sprite '../assets/death.png', {
+      sprite = new Sprite GraphicFactory.getImagePath('death.png'), {
         frameW: 48
         frameH: 48
         interval: 75

@@ -1,5 +1,7 @@
 {Animation} = require "../coffee/animation.coffee"
+{EntitySpriteFactory} = require "../coffee/entity_sprite_factory.coffee"
 {GraphicFactory} = require "../coffee/graphic_factory.coffee"
+{Sprite} = require "../spec/mock/sprite_mock.coffee"
 {atom} = require "../spec/mock/atom_mock.coffee"
 
 exports.Renderer = class Renderer
@@ -119,3 +121,7 @@ exports.Renderer = class Renderer
     deathAnimation.runOnce()
     deathAnimation.setPos entity.getGraphic().getCenter()
     @deathAnimations_.push deathAnimation
+
+images = (m for m in EntitySpriteFactory.getImagesToPreload())
+images.push (m for m in GraphicFactory.getImagesToPreload())...
+Sprite.preloadImages images
