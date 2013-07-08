@@ -122,6 +122,8 @@ exports.Renderer = class Renderer
     deathAnimation.setPos entity.getGraphic().getCenter()
     @deathAnimations_.push deathAnimation
 
-images = (m for m in EntitySpriteFactory.getImagesToPreload())
-images.push (m for m in GraphicFactory.getImagesToPreload())...
-Sprite.preloadImages images
+preloadImages = ->
+  images = (m for m in EntitySpriteFactory.getImagesToPreload())
+  images.push (m for m in GraphicFactory.getImagesToPreload())...
+  Sprite.preloadImages images
+preloadImages()
