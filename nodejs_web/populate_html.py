@@ -1,7 +1,7 @@
 import os.path
 import sys
 
-template = open('nodejs_web/main.html', 'r+')
+template = open('nodejs_web/index.html', 'r+')
 html_content = template.read()
 template.close()
 
@@ -16,6 +16,6 @@ if len(sys.argv) >= 2 and sys.argv[1] == "DEV":
   js_content *= len(game_files)
 html_content = html_content.replace('$GAME FILES$', js_content)
 
-output = open('bin/main.html', 'w')
+output = open('bin/index.html', 'w')
 output.write(html_content)
 output.close()
