@@ -42,7 +42,7 @@
     };
 
     GraphicFactory.getImagePath = function(fileName) {
-      return "../assets/" + fileName;
+      return "assets/" + fileName;
     };
 
     GraphicFactory.prototype.creationMethods_ = {
