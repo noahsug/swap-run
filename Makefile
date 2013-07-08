@@ -11,9 +11,14 @@ deploy_test:
 	cp vendor/Canvas-Sprite-Animations/sprite.min.js bin/
 	python nodejs_web/populate_html.py "DEV"
 
+# build index.html to be used by 'deploy'
+build_html:
+	python nodejs_web/populate_html.py "PROD"
+	cp bin/index.html nodejs_web/deploy.html
+
 # deploy as an html5 game for production
 deploy: deploy_test
-	python nodejs_web/populate_html.py "PROD"
+	cp nodejs_web/deploy.html bin/index.html
 
 # run the test suit using node.js
 test:

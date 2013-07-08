@@ -125,5 +125,5 @@ exports.Renderer = class Renderer
 preloadImages = ->
   images = (m for m in EntitySpriteFactory.getImagesToPreload())
   images.push (m for m in GraphicFactory.getImagesToPreload())...
-  Sprite.preloadImages images
+  Sprite.preloadImages images, {}
 preloadImages()
