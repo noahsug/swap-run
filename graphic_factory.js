@@ -42,7 +42,7 @@
     };
 
     GraphicFactory.getImagePath = function(fileName) {
-      return "swap-run/assets/" + fileName;
+      return fileName;
     };
 
     GraphicFactory.prototype.creationMethods_ = {
