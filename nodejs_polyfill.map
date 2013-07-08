@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "nodejs_polyfill.js",
+  "sourceRoot": "..",
+  "sources": [
+    "nodejs_web/nodejs_polyfill.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAEA;CAAA,CAAA,CAAiB,GAAX,CAAN,EAAiB;CAAA,UACf;CADF,EAAiB;;CAAjB,CAGA,CAAiB,GAAX,CAAN;CAHA"
+}

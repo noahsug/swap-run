@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "tracking_move_behavior.js",
+  "sourceRoot": "..",
+  "sources": [
+    "coffee/tracking_move_behavior.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;CAAA,KAAA,kCAAA;KAAA;oSAAA;;CAAA,CAAC,CAAgB,IAAA,KAAjB,oBAAiB;;CAAjB,CAEA,CAAqC,IAA9B,aAAP;CAEE;;;;;CAAA;;CAAA,EAA0B,MAAA,eAA1B;CACE,KAAA,IAAA;;CAAA,EAAqB,CAApB,EAAD,SAAgB;CAAhB,EACS,CAAC,EAAV,GAAS,CAAW;AACpB,CAAA,GAAA,EAAA,EAAyB;CAAzB,aAAA;QAFA;CAAA,EAGqB,CAApB,EAAD,OAAuD,EAAvC;CACf,EAAoB,CAApB,EAA0B,OAA3B,EAAgB;CALlB,IAA0B;;CAA1B;;CAFgE;CAFlE"
+}
