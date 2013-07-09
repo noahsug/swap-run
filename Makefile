@@ -1,7 +1,13 @@
-all: deploy_test
+all: deploy_fast
 
-# deploy as an html5 game for test, run by opening main.html in a browser
-deploy_test:
+# Create bin/ with required files to run the game.
+# Specify required .js files in nodejs_web/populate_html.py.
+deploy: deploy_fast
+	python nodejs_web/populate_html.py "PROD"
+
+# Same as deploy, but required .js files are generated automatically.
+# Note: May cause console errors due to incorrect file order.
+deploy_fast:
 	-rm -r bin
 	mkdir bin
 	coffee -cmo bin coffee
@@ -11,23 +17,10 @@ deploy_test:
 	cp vendor/Canvas-Sprite-Animations/sprite.min.js bin/
 	python nodejs_web/populate_html.py "DEV"
 
-# build index.html to be used by 'deploy'
-build_html:
-	python nodejs_web/populate_html.py "PROD"
-	cp bin/index.html nodejs_web/deploy.html
-
-# deploy as an html5 game for production
-deploy: deploy_test
-	cp nodejs_web/deploy.html bin/index.html
-
-# run the test suit using node.js
+# Run the test suit using node.js.
 test:
 	jasmine-node --coffee spec/
 
-# automatically test whenever a change is made
+# Automatically run tests whenever a change is made.
 watch:
 	jasmine-node --coffee spec/ --autotest --watch . --noStack
-
-# run a terminal version of the program using node.js
-run:
-	coffee coffee/main_console.coffee
