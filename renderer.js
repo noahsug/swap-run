@@ -53,7 +53,11 @@
     Renderer.prototype.drawPlayScreen_ = function() {
       this.drawBackground_();
       this.drawEntities_();
-      return this.drawDeaths_();
+      this.drawDeaths_();
+      atom.context.fillStyle = 'black';
+      atom.context.textAlign = "left";
+      atom.context.font = "10px Helvetica";
+      return atom.context.fillText(atom.msg, 1, 40);
     };
 
     Renderer.prototype.drawBackground_ = function() {

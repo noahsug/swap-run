@@ -99,16 +99,19 @@
         x: touch.clientX,
         y: touch.clientY
       };
+      atom.msg += pos.x + ', ' + pos.y + '\n'
       return this._gesture.push(pos);
     },
     ontouchstart: function(e) {
       this._gesture = [];
+      atom.msg = "START\n"
       return this._addTouchToGesture(e);
     },
     ontouchmove: function(e) {
       return this._addTouchToGesture(e);
     },
     ontouchend: function(e) {
+      atom.msg += "END"
       e.gesture = this._gesture;
       this.onkeydown(e);
       return this.onkeyup(e);
