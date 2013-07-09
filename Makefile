@@ -1,6 +1,6 @@
 # first run 'make deploy' on master
 all: clean
-	mv bin/* .
+	cp bin/* .
 	rm *.map
 	git checkout master assets
 	mv assets/* .

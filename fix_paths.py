@@ -1,7 +1,7 @@
 import os.path
 
 file = open('graphic_factory.js', 'r')
-content = f.read()
+content = file.read()
 file.close()
 
 content = content.replace('"../assets/" + ', '')
