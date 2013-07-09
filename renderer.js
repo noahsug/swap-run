@@ -58,7 +58,7 @@
 
     Renderer.prototype.drawBackground_ = function() {
       atom.context.clearRect(0, 0, atom.width, atom.height);
-      return this.backgroundGraphic_.fill(atom.context, 0, 0, atom.width, atom.height);
+//      return this.backgroundGraphic_.fill(atom.context, 0, 0, atom.width, atom.height);
     };
 
     Renderer.prototype.drawEntities_ = function() {
