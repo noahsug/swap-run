@@ -37,8 +37,8 @@
         this._pressed[action] = true;
       }
       this._down[action] = true;
-      e.stopPropagation();
-      return e.preventDefault();
+//      e.stopPropagation();
+//      return e.preventDefault();
     },
     onkeyup: function(e) {
       var action;
@@ -48,8 +48,8 @@
         return;
       }
       this._released.push(action);
-      e.stopPropagation();
-      return e.preventDefault();
+//      e.stopPropagation();
+//      return e.preventDefault();
     },
     clearPressed: function() {
       var action, _i, _len, _ref;
