@@ -17,8 +17,8 @@
 
     function EnemySpawner() {
       EnemySpawner.__super__.constructor.call(this);
-      this.spawnTime_ = 99999999999;
-      this.timeUntilSpawn_ = 999999999999;
+      this.spawnTime_ = .9;
+      this.timeUntilSpawn_ = 0;
     }
 
     EnemySpawner.prototype.update = function(dt) {

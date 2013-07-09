@@ -37,8 +37,8 @@
         this._pressed[action] = true;
       }
       this._down[action] = true;
-//      e.stopPropagation();
-//      return e.preventDefault();
+      e.stopPropagation();
+      return e.preventDefault();
     },
     onkeyup: function(e) {
       var action;
@@ -48,8 +48,8 @@
         return;
       }
       this._released.push(action);
-//      e.stopPropagation();
-//      return e.preventDefault();
+      e.stopPropagation();
+      return e.preventDefault();
     },
     clearPressed: function() {
       var action, _i, _len, _ref;
@@ -99,19 +99,19 @@
         x: touch.clientX,
         y: touch.clientY
       };
-      atom.msg += pos.x + ', ' + pos.y + '\n'
       return this._gesture.push(pos);
     },
     ontouchstart: function(e) {
       this._gesture = [];
-      atom.msg = "START\n"
       return this._addTouchToGesture(e);
     },
     ontouchmove: function(e) {
-      return this._addTouchToGesture(e);
+      this._addTouchToGesture(e);
+      e.gesture = this._gesture;
+      this.onkeydown(e);
+      return this.onkeyup(e);
     },
     ontouchend: function(e) {
-      atom.msg += "END"
       e.gesture = this._gesture;
       this.onkeydown(e);
       return this.onkeyup(e);
@@ -204,7 +204,7 @@
       } else {
         return atom.button.WHEELDOWN;
       }
-    } else if (e.type === 'touchend') {
+    } else if (e.type === 'touchend' || e.type === 'touchmove') {
       return determineGesture(e.gesture);
     }
   };

@@ -53,16 +53,12 @@
     Renderer.prototype.drawPlayScreen_ = function() {
       this.drawBackground_();
       this.drawEntities_();
-      this.drawDeaths_();
-      atom.context.fillStyle = 'black';
-      atom.context.textAlign = "left";
-      atom.context.font = "10px Helvetica";
-      return atom.context.fillText(atom.msg, 1, 40);
+      return this.drawDeaths_();
     };
 
     Renderer.prototype.drawBackground_ = function() {
       atom.context.clearRect(0, 0, atom.width, atom.height);
-//      return this.backgroundGraphic_.fill(atom.context, 0, 0, atom.width, atom.height);
+      return this.backgroundGraphic_.fill(atom.context, 0, 0, atom.width, atom.height);
     };
 
     Renderer.prototype.drawEntities_ = function() {
