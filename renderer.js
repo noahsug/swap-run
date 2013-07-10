@@ -69,12 +69,12 @@
         entity = entities[_i];
         this.drawShadow_(entity);
       }
-      _results = [];
-      for (_j = 0, _len1 = entities.length; _j < _len1; _j++) {
-        entity = entities[_j];
-        _results.push(entity.draw(atom.context));
-      }
-      return _results;
+//      _results = [];
+//      for (_j = 0, _len1 = entities.length; _j < _len1; _j++) {
+//        entity = entities[_j];
+//        _results.push(entity.draw(atom.context));
+//      }
+//      return _results;
     };
 
     Renderer.prototype.drawDeaths_ = function() {
