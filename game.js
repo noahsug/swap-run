@@ -25,6 +25,7 @@
       Game.__super__.constructor.apply(this, arguments);
       atom.setDesiredSurfaceArea(500000);
       keybindings.configure();
+      this.maxTimeDifference_ = .075;
       this.gameInfo_ = new GameInfo;
       this.renderer_ = new Renderer(this.gameInfo_);
       this.init_();
@@ -75,6 +76,7 @@
     };
 
     Game.prototype.update = function(dt) {
+      dt = Math.min(dt, this.maxTimeDifference_);
       this.listenToKeyboardShortcuts_();
       this.renderer_.update(dt);
       switch (this.gameInfo_.getState()) {

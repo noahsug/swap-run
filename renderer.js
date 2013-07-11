@@ -17,7 +17,7 @@
       this.gameInfo_ = gameInfo_;
       this.prevState_ = 'none';
       this.deathAnimations_ = [];
-//      this.backgroundGraphic_ = GraphicFactory.create('background');
+      this.backgroundGraphic_ = GraphicFactory.create('background');
       this.initAnimations_();
     }
 
@@ -58,7 +58,7 @@
 
     Renderer.prototype.drawBackground_ = function() {
       atom.context.clearRect(0, 0, atom.width, atom.height);
-//      return this.backgroundGraphic_.fill(atom.context, 0, 0, atom.width, atom.height);
+      return this.backgroundGraphic_.fill(atom.context, 0, 0, atom.width, atom.height);
     };
 
     Renderer.prototype.drawEntities_ = function() {
@@ -69,12 +69,12 @@
         entity = entities[_i];
         this.drawShadow_(entity);
       }
-//      _results = [];
-//      for (_j = 0, _len1 = entities.length; _j < _len1; _j++) {
-//        entity = entities[_j];
-//        _results.push(entity.draw(atom.context));
-//      }
-//      return _results;
+      _results = [];
+      for (_j = 0, _len1 = entities.length; _j < _len1; _j++) {
+        entity = entities[_j];
+        _results.push(entity.draw(atom.context));
+      }
+      return _results;
     };
 
     Renderer.prototype.drawDeaths_ = function() {
