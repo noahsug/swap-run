@@ -2,12 +2,17 @@ all: deploy_fast
 
 # Create bin/ with required files to run the game.
 # Specify required .js files in nodejs_web/populate_html.py.
-deploy: deploy_fast
+prod: dev
 	python nodejs_web/populate_html.py "PROD"
+	git checkout gh-pages
+	make
+	git commit -am "updated game"
+	git push
+	git checkout master
 
 # Same as deploy, but required .js files are generated automatically.
 # Note: May cause console errors due to incorrect file order.
-deploy_fast:
+dev:
 	-rm -r bin
 	mkdir bin
 	coffee -cmo bin coffee
