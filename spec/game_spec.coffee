@@ -131,3 +131,10 @@ describe "A game", ->
     atom.input.press 'pause'
     tick()
     expect(state).not.toBe 'paused'
+
+  it "limits the time difference between updates", ->
+    startingPos = player.getPos()
+    atom.input.press 'up'
+    game.update 100
+    distance = util.distance startingPos, player.getPos()
+    expect(distance).toAlmostBe .075 * player.getSpeed()

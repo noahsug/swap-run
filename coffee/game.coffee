@@ -11,6 +11,7 @@ exports.Game = class Game extends atom.Game
     super
     atom.setDesiredSurfaceArea 500000
     keybindings.configure()
+    @maxTimeDifference_ = .075
     @gameInfo_ = new GameInfo
     @renderer_ = new Renderer @gameInfo_
     @init_()
@@ -45,6 +46,7 @@ exports.Game = class Game extends atom.Game
     @draw()
 
   update: (dt) ->
+    dt = Math.min dt, @maxTimeDifference_
     @listenToKeyboardShortcuts_()
     @renderer_.update dt
     switch @gameInfo_.getState()
