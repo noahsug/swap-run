@@ -1,4 +1,4 @@
-all: deploy_fast
+all: dev
 
 # Create bin/ with required files to run the game.
 # Specify required .js files in nodejs_web/populate_html.py.
