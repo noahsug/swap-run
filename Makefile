@@ -1,14 +1,17 @@
 all: dev
 
-# Create bin/ with required files to run the game.
-# Specify required .js files in nodejs_web/populate_html.py.
-prod: dev
-	python nodejs_web/populate_html.py "PROD"
+# Deploy the game to http://noahsug.github.io/swap-run/
+deploy: prod
 	git checkout gh-pages
 	make
 	git commit -am "updated game"
 	git push
 	git checkout master
+
+# Create bin/ with required files to run the game.
+# Specify required .js files in nodejs_web/populate_html.py.
+prod: dev
+	python nodejs_web/populate_html.py "PROD"
 
 # Same as deploy, but required .js files are generated automatically.
 # Note: May cause console errors due to incorrect file order.

@@ -1,6 +1,6 @@
 {EntityFactory} = require "../coffee/entity_factory.coffee"
-{EnemySpawner} = require "../coffee/enemy_spawner.coffee"
 {GameInfo} = require "../coffee/game_info.coffee"
+{LevelFactory} = require "../coffee/level_factory.coffee"
 {Renderer} = require "../coffee/renderer.coffee"
 {atom} = require "../spec/mock/atom_mock.coffee"
 {keybindings} = require "../coffee/keybindings.coffee"
@@ -19,18 +19,22 @@ exports.Game = class Game extends atom.Game
   init_: ->
     @gameInfo_.reset()
     @initPlayer_()
-    @initEnemySpawner_()
+    @startLevelIntro_ 1
 
   initPlayer_: ->
     player = EntityFactory.create "player"
     player.setKnowledge @gameInfo_
-    player.setPos { x: atom.width / 2, y: atom.height / 2 }
     @gameInfo_.setPlayer player
 
-  initEnemySpawner_: ->
-    @spawner_ = new EnemySpawner()
-    @spawner_.on 'spawn', (enemy) =>
-      @addEnemy_ enemy
+  startLevelIntro_: (num) ->
+    @gameInfo_.getLevel()?.end()
+    if num > LevelFactory.LAST_LEVEL
+      @gameInfo_.setState 'beat game'
+    else
+      @gameInfo_.setState 'level intro'
+      @gameInfo_.setLevel LevelFactory.createLevel num
+      @gameInfo_.getLevel().on 'spawn', (enemy) =>
+        @addEnemy_ enemy
 
   addEnemy_: (enemy) ->
     @gameInfo_.addEnemy enemy
@@ -38,6 +42,14 @@ exports.Game = class Game extends atom.Game
 
   restart_: ->
     @init_()
+    @startPlaying_()
+
+  startPlaying_: ->
+    @renderer_.reset()
+    @gameInfo_.setEnemies []
+    @gameInfo_.getPlayer().setPos { x: atom.width / 2, y: atom.height / 2 }
+    @gameInfo_.getPlayer().reset()
+    @gameInfo_.setState 'playing'
 
   draw: ->
     @renderer_.draw()
@@ -47,23 +59,32 @@ exports.Game = class Game extends atom.Game
 
   update: (dt) ->
     dt = Math.min dt, @maxTimeDifference_
-    @listenToKeyboardShortcuts_()
+    @checkPause_()
     @renderer_.update dt
     switch @gameInfo_.getState()
-      when 'paused' then 'do nothing'
+      when 'level intro' then @updateStartingLevel_ dt
       when 'playing' then @updatePlaying_ dt
-      when 'dying' then @updateDying_ dt
-      when 'lost' then @updateEndGame_()
+      when 'paused' then 'do nothing'
+      when 'lost' then @updateLost_ dt
+      when 'beat game' then @updateBeatGame_()
 
-  listenToKeyboardShortcuts_: ->
+  checkPause_: ->
     if atom.input.pressed 'pause'
       if @gameInfo_.getState() is 'paused'
         @gameInfo_.setState 'playing'
       else if @gameInfo_.getState() is 'playing'
         @gameInfo_.setState 'paused'
 
+  updateStartingLevel_: (dt) ->
+    if atom.input.pressed 'swap'
+      @startPlaying_()
+
+  updateBeatGame_: ->
+    if atom.input.pressed 'swap'
+      @restart_()
+
   updatePlaying_: (dt) ->
-    @spawner_.update dt
+    @gameInfo_.getLevel().update dt
     @updateEntities_ dt
     @checkCollisions_()
     @removeInactive_()
@@ -88,14 +109,15 @@ exports.Game = class Game extends atom.Game
     @gameInfo_.addScore prevNumEnemies - activeEnemies.length
 
   checkGameOver_: ->
-    unless @gameInfo_.getPlayer().isActive()
-      @gameInfo_.setState 'dying'
-
-  updateDying_: (dt) ->
-    @updateEntities_ dt
-    if @renderer_.playerDeathAnimationFinished()
+    if not @gameInfo_.getPlayer().isActive()
       @gameInfo_.setState 'lost'
+    else if @gameInfo_.getLevel().isFinished()
+      @startNextLevelIntro_()
 
-  updateEndGame_: ->
-    if atom.input.down 'swap'
+  startNextLevelIntro_: ->
+    @startLevelIntro_ @gameInfo_.getLevel().getNumber() + 1
+
+  updateLost_: (dt) ->
+    @updateEntities_ dt
+    if @renderer_.lostAnimationFinished() and atom.input.pressed 'swap'
       @restart_()

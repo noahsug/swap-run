@@ -2,8 +2,9 @@
 {atom} = require "../spec/mock/atom_mock.coffee"
 
 exports.UserInputMoveBehavior = class UserInputMoveBehavior extends MoveBehavior
-  constructor: ->
-    super()
+
+  reset: ->
+    super
     @history_ = [undefined, undefined]
 
   determineVelocityVector_: ->

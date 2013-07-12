@@ -6,6 +6,7 @@ ordered_game_files = [
   'event_emitter',
   'position',
 
+  'level',
   'graphic',
   'background_graphic',
   'entity_graphic',
@@ -32,6 +33,7 @@ ordered_game_files = [
   'entity_factory',
 
   'enemy_spawner',
+  'level_factory',
   'renderer',
   'game',
 ]

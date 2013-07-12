@@ -9,6 +9,9 @@ exports.Player = class Player extends Entity
     else super dt
     @restrictPosition_()
 
+  reset: ->
+    @moveBehavior_.reset()
+
   swapPositionsWithNearestEnemy_: ->
     nearestEnemy = @knowledge_.getNearestEnemyTo @getPos()
     if nearestEnemy

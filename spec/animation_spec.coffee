@@ -36,3 +36,11 @@ describe 'An animation', ->
     animation.start()
     animation.update(1)
     expect(animation.isFinished()).toBe true
+
+  it 'reports being finished if it was never started', ->
+    animation.vary('alpha').from(0).to(1).forDuration(2)
+    animation.update 1
+    expect(animation.isFinished()).toBe true
+
+    animation.start()
+    expect(animation.isFinished()).toBe false

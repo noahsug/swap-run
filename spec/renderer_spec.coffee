@@ -19,6 +19,7 @@ describe "A renderer", ->
     entity
 
   it "draws entities in ascending order by y-coordinate", ->
+    gameInfo.setState 'playing'
     entity1 = addEntityAtPos x: 49, y: 82
     entity2 = addEntityAtPos x: 32, y: 0
     entity3 = addEntityAtPos x: 0, y: 33

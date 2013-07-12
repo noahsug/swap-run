@@ -7,24 +7,34 @@
 exports.Renderer = class Renderer
   constructor: (@gameInfo_) ->
     @prevState_ = 'none'
-    @deathAnimations_ = []
+    @reset()
     @backgroundGraphic_ = GraphicFactory.create 'background'
     @initAnimations_()
 
+  reset: ->
+    @deathAnimations_ = []
+
   initAnimations_: ->
-    @fadeToBlackAnimation_ = new Animation
-    @fadeToBlackAnimation_.vary('alpha').from(0).to(1).forDuration(2)
+    @animations_ = []
+    @lostAnimation_ = new Animation
+    @lostAnimation_.vary('alpha').from(0).to(1).forDuration(2)
+    @animations_.push @lostAnimation_
+
+    @beatLevelAnimation_ = new Animation
+    @beatLevelAnimation_.vary('alpha').from(0).to(1).forDuration(1)
+    @animations_.push @beatLevelAnimation_
 
   update: (dt) ->
-    switch @gameInfo_.getState()
-      when 'dying' then @fadeToBlackAnimation_.update dt
+    for animation in @animations_
+      animation.update dt
 
   draw: ->
     switch @gameInfo_.getState()
+      when 'level intro' then @drawLevelIntroScreen_()
       when 'playing' then @drawPlayScreen_()
-      when 'dying' then @drawDyingScreen_()
-      when 'lost' then @drawScoreScreen_()
+      when 'lost' then @drawLostScreen_()
       when 'paused' then @drawPauseScreen_()
+      when 'beat game' then @drawBeatGameScreen_()
     @prevState_ = @gameInfo_.getState()
 
   drawPlayScreen_: ->
@@ -80,24 +90,54 @@ exports.Renderer = class Renderer
     ctx.fill()
     ctx.closePath()
 
-  drawDyingScreen_: ->
-    @drawPlayScreen_()
-    @fadeToBlack_()
-
-  fadeToBlack_: ->
+  drawLevelIntroScreen_: ->
     if @prevState_ is 'playing'
-      @fadeToBlackAnimation_.start()
-    atom.context.setAlpha @fadeToBlackAnimation_.get 'alpha'
+      @beatLevelAnimation_.start()
+    if @beatLevelAnimationFinished()
+      @drawBeatLevelAnimation_()
+      @drawLevelIntroText_()
+    else
+      @drawPlayScreen_()
+      @drawBeatLevelAnimation_()
+
+  drawBeatLevelAnimation_: ->
+    atom.context.setAlpha @beatLevelAnimation_.get 'alpha'
     atom.context.fillStyle = 'black'
     atom.context.fillRect 0, 0, atom.width, atom.height
     atom.context.setAlpha 1
 
-  playerDeathAnimationFinished: ->
-    @fadeToBlackAnimation_.isFinished()
+  beatLevelAnimationFinished: ->
+    @beatLevelAnimation_.isFinished()
 
-  drawScoreScreen_: ->
-    @drawDyingScreen_()
-    @drawScore_()
+  drawLevelIntroText_: ->
+    text = "stage #{@gameInfo_.getLevel().getNumber()}"
+    atom.context.fillStyle = 'white'
+    atom.context.textAlign = 'center'
+    atom.context.font = "50px Chelsea Market"
+    atom.context.fillText text, atom.width / 2, atom.height / 2 - 60
+
+    atom.context.font = "100px Chelsea Market"
+    text = @gameInfo_.getLevel().getTitle()
+    atom.context.fillText text, atom.width / 2, atom.height / 2 + 80
+
+  drawLostScreen_: ->
+    if @prevState_ is 'playing'
+      @lostAnimation_.start()
+    if @lostAnimationFinished()
+      @drawLostAnimation_()
+      @drawScore_()
+    else
+      @drawPlayScreen_()
+      @drawLostAnimation_()
+
+  drawLostAnimation_: ->
+    atom.context.setAlpha @lostAnimation_.get 'alpha'
+    atom.context.fillStyle = 'black'
+    atom.context.fillRect 0, 0, atom.width, atom.height
+    atom.context.setAlpha 1
+
+  lostAnimationFinished: ->
+    @lostAnimation_.isFinished()
 
   drawScore_: ->
     @broadcastMessage_ "score: #{@gameInfo_.getScore()}"
@@ -109,6 +149,11 @@ exports.Renderer = class Renderer
       atom.context.fillRect 0, 0, atom.width, atom.height
       atom.context.setAlpha 1
       @broadcastMessage_ "paused"
+
+  drawBeatGameScreen_: ->
+    atom.context.fillStyle = 'black'
+    atom.context.fillRect 0, 0, atom.width, atom.height
+    @broadcastMessage_ "victory is yours"
 
   broadcastMessage_: (text) ->
     atom.context.fillStyle = 'white'

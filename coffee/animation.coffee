@@ -38,7 +38,7 @@ exports.Animation = class Animation
       animationVar.value = animationVar.startValue + valueRange * percentDone
 
   varIsFinished_: (animationVar) ->
-    animationVar.elapsed >= animationVar.duration
+    not animationVar.elapsed? or animationVar.elapsed >= animationVar.duration
 
   isFinished: ->
     for varName, animationVar of @vars_

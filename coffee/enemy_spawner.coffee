@@ -7,18 +7,46 @@ exports.EnemySpawner = class EnemySpawner extends EventEmitter
 
   constructor: ->
     super()
-    @spawnTime_ = .9
-    @timeUntilSpawn_ = 0
+    @setSpawnRequests []
+
+  setSpawnRequests: (@spawnRequests_) ->
+    @spawnRequestIndex_ = 0
+    @elapsed_ = 0
+    @spawning_ = []
+
+  isDoneSpawningEnemies: ->
+    @spawnRequests_.length is @spawnRequestIndex_
 
   update: (dt) ->
-    @timeUntilSpawn_ -= dt
-    while @timeUntilSpawn_ < 0
-      @spawn_()
-      @timeUntilSpawn_ += @spawnTime_
+    @elapsed_ += dt
+    @addNewSpawnRequests_()
+    @spawnEnemies_()
 
-  spawn_: ->
-    type = util.randElement ['enemy', 'bat', 'ogre', 'spectre', 'deathknight',
-        'skeleton']
+  addNewSpawnRequests_: ->
+    spawnRequest = @spawnRequests_[@spawnRequestIndex_]
+    while spawnRequest?.time < @elapsed_
+      @handleSpawnRequest_ spawnRequest
+      @spawnRequestIndex_++
+      spawnRequest = @spawnRequests_[@spawnRequestIndex_]
+
+  handleSpawnRequest_: (spawnRequest) ->
+    if spawnRequest.spawnImmediately
+      for i in [1..spawnRequest.spawnImmediately.quantity]
+        @spawn_ spawnRequest.spawnImmediately.type
+    @setCurrentlySpawning_ spawnRequest
+
+  setCurrentlySpawning_: (spawnRequest) ->
+    @spawning_ = spawnRequest.spawn ? []
+    for spawnInfo in @spawning_
+      spawnInfo.spawnTime = spawnRequest.time
+
+  spawnEnemies_: ->
+    for spawnInfo in @spawning_
+      while spawnInfo.spawnTime < @elapsed_
+        @spawn_ spawnInfo.type
+        spawnInfo.spawnTime += spawnInfo.rate
+
+  spawn_: (type) ->
     enemy = EntityFactory.create type
     enemyPos = @getRandomBorderPos_ enemy.getRadius()
     enemy.setPos enemyPos

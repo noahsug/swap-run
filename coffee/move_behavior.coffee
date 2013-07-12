@@ -2,6 +2,9 @@
 
 exports.MoveBehavior = class MoveBehavior
   constructor: ->
+    @reset()
+
+  reset: ->
     @velocityVector_ = { x: 0, y: 0 }
 
   setMovingEntity: (@movingEntity_) ->

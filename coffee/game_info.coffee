@@ -6,11 +6,14 @@ exports.GameInfo = class GameInfo
 
   init_: ->
     @enemies_ = []
-    @state_ = 'playing'
+    @state_ = 'starting level'
     @score_ = 0
 
   reset: ->
     @init_()
+
+  setLevel: (@level_) ->
+  getLevel: -> @level_
 
   setState: (@state_) ->
   getState: -> @state_
